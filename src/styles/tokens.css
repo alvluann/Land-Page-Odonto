@@ -1,0 +1,74 @@
+:root {
+  /* Brand */
+  --color-beige: #e6d9d0;
+  --color-terra: #c48a76;
+  --color-terra-deep: #a96f59;
+  --color-terra-soft: #d1a99a;
+  --color-gold-soft: #e3cfaf;
+  --color-ink: #111111;
+  --color-white: #ffffff;
+
+  /* Neutral system */
+  --color-bg: #f5efea;
+  --color-surface: #ffffff;
+  --color-surface-soft: #f7efea;
+  --color-text-strong: #2f2622;
+  --color-text: #5f4e46;
+  --color-text-muted: #7a675f;
+  --color-border: rgba(100, 72, 58, 0.18);
+  --color-border-strong: rgba(124, 80, 60, 0.3);
+  --color-overlay: rgba(17, 17, 17, 0.42);
+
+  /* Typography */
+  --font-heading: "Cormorant Garamond", "Times New Roman", serif;
+  --font-body: "Manrope", "Segoe UI", sans-serif;
+
+  --text-xs: 0.76rem;
+  --text-sm: 0.875rem;
+  --text-md: clamp(0.98rem, 0.28vw + 0.93rem, 1.06rem);
+  --text-lg: clamp(1.06rem, 0.4vw + 0.96rem, 1.2rem);
+
+  --title-h1: clamp(2.2rem, 4.8vw, 4.25rem);
+  --title-h2: clamp(1.8rem, 3.7vw, 3rem);
+  --title-h3: clamp(1.28rem, 1.75vw, 1.62rem);
+
+  --leading-tight: 1.1;
+  --leading-body: 1.68;
+  --tracking-title: -0.012em;
+  --tracking-wide: 0.17em;
+
+  /* Layout */
+  --container-max: 72rem;
+  --container-gutter: clamp(1.1rem, 3vw, 2rem);
+  --section-space: clamp(3.85rem, 7.6vw, 6.9rem);
+
+  /* Spacing scale */
+  --space-2xs: 0.375rem;
+  --space-xs: 0.625rem;
+  --space-sm: 0.875rem;
+  --space-md: 1.125rem;
+  --space-lg: 1.75rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 3.75rem;
+  --space-3xl: 5.25rem;
+
+  /* Radius */
+  --radius-sm: 0.75rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.35rem;
+  --radius-xl: 2rem;
+  --radius-pill: 999px;
+
+  /* Shadows */
+  --shadow-card: 0 14px 35px rgba(100, 72, 58, 0.12);
+  --shadow-card-hover: 0 19px 45px rgba(100, 72, 58, 0.19);
+  --shadow-hero: 0 24px 60px rgba(34, 20, 14, 0.22);
+  --shadow-glow: 0 8px 26px rgba(169, 110, 87, 0.35);
+
+  /* Motion */
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 580ms;
+  --ease-standard: cubic-bezier(0.2, 0.65, 0.3, 1);
+  --ease-emphasis: cubic-bezier(0.16, 1, 0.3, 1);
+}
