@@ -7,7 +7,7 @@ export function Header() {
         <a className="brand" href="#inicio" aria-label="Voltar para o início">
           <span className="brand__logo">
             <img
-              src="/assets/logo-cro.jpeg"
+              src="/assets/logo-guia.png"
               alt="Logo da Dra. Luara Alves"
               width={80}
               height={80}

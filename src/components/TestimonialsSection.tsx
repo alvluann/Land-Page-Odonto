@@ -23,6 +23,9 @@ export function TestimonialsSection() {
           {testimonials.map((testimonial, index) => (
             <Reveal key={testimonial.name} delay={90 + index * 50}>
               <article className="surface-card testimonial-card">
+                <div className="testimonial-card__stars" aria-label="5 de 5 estrelas">
+                  ★★★★★
+                </div>
                 <p>{testimonial.text}</p>
                 <footer>
                   <strong>{testimonial.name}</strong>

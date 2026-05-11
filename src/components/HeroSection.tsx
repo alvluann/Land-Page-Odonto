@@ -8,7 +8,9 @@ export function HeroSection() {
         <Reveal className="hero__content">
           <p className="eyebrow">Odontologia estética e harmonização facial</p>
           <h1 id="hero-title">
-            Sofisticação, saúde e naturalidade para valorizar o seu sorriso.
+            Sofisticação, saúde e{" "}
+            <span className="text-accent">naturalidade</span>{" "}
+            para valorizar o seu sorriso.
           </h1>
           <p className="hero__lead">
             Na clínica da {brand.name}, cada atendimento é desenhado com técnica,
