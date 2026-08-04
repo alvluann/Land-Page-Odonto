@@ -1,4 +1,5 @@
 import { brand, confidencePoints } from "../data/content";
+import { assetUrl } from "../lib/assetUrl";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
@@ -8,7 +9,7 @@ export function AboutSection() {
       <div className="container about__grid">
         <Reveal className="about__media">
           <img
-            src="/assets/dra-standing.jpeg"
+            src={assetUrl("assets/dra-standing.jpeg")}
             alt="Dra. Luara Alves em pé no consultório."
             width={1066}
             height={1600}
