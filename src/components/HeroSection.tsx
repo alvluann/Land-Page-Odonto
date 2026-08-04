@@ -1,4 +1,5 @@
 import { brand, heroHighlights, whatsappHref } from "../data/content";
+import { assetUrl } from "../lib/assetUrl";
 import { Reveal } from "./Reveal";
 
 export function HeroSection() {
@@ -36,7 +37,7 @@ export function HeroSection() {
         <Reveal className="hero__visual" delay={120}>
           <div className="hero-card">
             <img
-              src="/assets/dra-hero.jpeg"
+              src={assetUrl("assets/dra-hero.jpeg")}
               alt="Dra. Luara Alves em ambiente clínico elegante."
               width={1600}
               height={1066}
@@ -47,7 +48,7 @@ export function HeroSection() {
 
           <div className="floating-tag floating-tag--brand" aria-hidden="true">
             <img
-              src="/assets/logo-full.jpeg"
+              src={assetUrl("assets/logo-full.jpeg")}
               alt=""
               width={420}
               height={420}
