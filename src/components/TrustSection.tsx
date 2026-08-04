@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
 import { resultGallery } from "../data/content";
+import { assetUrl } from "../lib/assetUrl";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
-const SPEED = 0.45; // px per animation frame
+const SPEED = 0.45;
 
 function ResultsCarousel() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -16,7 +17,6 @@ function ResultsCarousel() {
     const set = setRef.current;
     if (!track || !set) return;
 
-    // Measure after paint so layout is settled
     let raf: number;
     let loopAt = 0;
 
@@ -35,7 +35,6 @@ function ResultsCarousel() {
       raf = requestAnimationFrame(step);
     };
 
-    // Defer first measure until after browser paint
     raf = requestAnimationFrame(() => {
       measure();
       raf = requestAnimationFrame(step);
@@ -56,7 +55,7 @@ function ResultsCarousel() {
         <div key={item.src} className="results-scroll-carousel__item">
           <figure className="result-card">
             <img
-              src={item.src}
+              src={assetUrl(item.src)}
               alt={item.alt}
               width={1170}
               height={1170}
@@ -77,11 +76,9 @@ function ResultsCarousel() {
       onMouseLeave={() => { pausedRef.current = false; }}
     >
       <div ref={trackRef} className="results-scroll-carousel__track">
-        {/* First set — measured for loop point */}
         <div ref={setRef} className="results-scroll-carousel__set">
           {items}
         </div>
-        {/* Duplicate for seamless loop */}
         <div className="results-scroll-carousel__set" aria-hidden="true">
           {items}
         </div>
