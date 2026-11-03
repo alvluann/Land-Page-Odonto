@@ -2657,7 +2657,8 @@ body {
   mix-blend-mode: multiply;
 }
 
-.app-shell > * {
+.app-shell > main,
+.app-shell > .footer {
   position: relative;
   z-index: 1;
 }
