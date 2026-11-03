@@ -1,5 +1,7 @@
-import { useEffect, useRef } from "react";
+import { Pause, Play } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { resultGallery } from "../data/content";
+import { AnimatedIllustration } from "./AnimatedIllustration";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
@@ -10,11 +12,34 @@ function ResultsCarousel() {
   const setRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
   const pausedRef = useRef(false);
+  const [manualPaused, setManualPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(() =>
+    typeof window !== "undefined"
+      ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      : false,
+  );
+
+  useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const handleChange = (event: MediaQueryListEvent) => setReducedMotion(event.matches);
+    query.addEventListener("change", handleChange);
+    return () => query.removeEventListener("change", handleChange);
+  }, []);
+
+  useEffect(() => {
+    pausedRef.current = manualPaused || reducedMotion;
+  }, [manualPaused, reducedMotion]);
 
   useEffect(() => {
     const track = trackRef.current;
     const set = setRef.current;
     if (!track || !set) return;
+
+    if (reducedMotion) {
+      progressRef.current = 0;
+      track.style.transform = "";
+      return;
+    }
 
     // Measure after paint so layout is settled
     let raf: number;
@@ -48,7 +73,11 @@ function ResultsCarousel() {
       cancelAnimationFrame(raf);
       window.removeEventListener("resize", onResize);
     };
-  }, []);
+  }, [reducedMotion]);
+
+  const setInteractionPaused = (paused: boolean) => {
+    pausedRef.current = manualPaused || paused || reducedMotion;
+  };
 
   const items = (
     <>
@@ -72,19 +101,43 @@ function ResultsCarousel() {
 
   return (
     <div
-      className="results-scroll-carousel"
-      onMouseEnter={() => { pausedRef.current = true; }}
-      onMouseLeave={() => { pausedRef.current = false; }}
+      className={`results-scroll-carousel ${reducedMotion ? "is-static" : ""}`.trim()}
+      role="region"
+      aria-label="Galeria de resultados clínicos"
+      onMouseEnter={() => setInteractionPaused(true)}
+      onMouseLeave={() => setInteractionPaused(false)}
+      onFocusCapture={() => setInteractionPaused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) {
+          setInteractionPaused(false);
+        }
+      }}
+      onPointerDown={() => setInteractionPaused(true)}
+      onPointerUp={() => setInteractionPaused(false)}
+      onPointerCancel={() => setInteractionPaused(false)}
     >
-      <div ref={trackRef} className="results-scroll-carousel__track">
+      {!reducedMotion && (
+        <button
+          type="button"
+          className="results-scroll-carousel__control"
+          aria-pressed={manualPaused}
+          onClick={() => setManualPaused((paused) => !paused)}
+        >
+          {manualPaused ? <Play size={16} aria-hidden="true" /> : <Pause size={16} aria-hidden="true" />}
+          <span>{manualPaused ? "Continuar" : "Pausar"}</span>
+        </button>
+      )}
+
+      <div ref={trackRef} className="results-scroll-carousel__track" aria-live="off">
         {/* First set — measured for loop point */}
         <div ref={setRef} className="results-scroll-carousel__set">
           {items}
         </div>
-        {/* Duplicate for seamless loop */}
-        <div className="results-scroll-carousel__set" aria-hidden="true">
-          {items}
-        </div>
+        {!reducedMotion && (
+          <div className="results-scroll-carousel__set" aria-hidden="true">
+            {items}
+          </div>
+        )}
       </div>
     </div>
   );
@@ -94,12 +147,22 @@ export function TrustSection() {
   return (
     <section id="resultados" className="section trust" aria-labelledby="trust-title">
       <div className="container trust__header">
+        <AnimatedIllustration
+          src="/assets/illustrations/illustration-11-results.png"
+          className="trust__art"
+          motion="breathe"
+          shimmer
+        />
         <Reveal>
           <SectionHeading
             id="trust-title"
-            eyebrow="Confiança construída em cada detalhe"
-            title="Resultados reais, cuidado personalizado e ambiente acolhedor."
-            centered
+            eyebrow="Casos reais, escolhas individuais"
+            title={
+              <>
+                Resultados reais.
+                <span className="title-accent">Identidade preservada.</span>
+              </>
+            }
             compact
           />
         </Reveal>

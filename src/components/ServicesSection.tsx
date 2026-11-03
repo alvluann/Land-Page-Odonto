@@ -1,26 +1,20 @@
 import type { ServiceIcon } from "../data/content";
 import { services } from "../data/content";
+import { AnimatedIllustration } from "./AnimatedIllustration";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
-function ServiceIconGraphic({ name }: { name: ServiceIcon }) {
-  const paths: Record<ServiceIcon, string> = {
-    cleaning: "M12 3v18M5 8h14M7 14h10",
-    whitening: "M12 2l2.4 5.2L20 8l-4 4 .9 6L12 15.6 7.1 18 8 12 4 8l5.6-.8L12 2Z",
-    botox:
-      "M4 12c2.7-.5 4.5-2.3 5-5 1 .8 2 .8 3 0 .5 2.7 2.3 4.5 5 5-2.7.5-4.5 2.3-5 5-1-.8-2-.8-3 0-.5-2.7-2.3-4.5-5-5Z",
-    harmonization: "M12 3c2.5 2.6 5 4.8 5 8.1A5 5 0 1 1 7 11.1C7 7.8 9.5 5.6 12 3Z",
-    evaluation: "M4 6h16M4 12h16M4 18h10",
-    aesthetics: "M12 3a7 7 0 1 1 0 14 7 7 0 0 1 0-14Zm0 3v4l3 2",
-    prevention: "M12 2 4 6v6c0 5 3.2 8.6 8 10 4.8-1.4 8-5 8-10V6l-8-4Z",
-  };
+const serviceArtwork: Record<ServiceIcon, string> = {
+  cleaning: "/assets/illustrations/illustration-03-cleaning.png",
+  whitening: "/assets/illustrations/illustration-04-whitening.png",
+  botox: "/assets/illustrations/illustration-05-botox.png",
+  harmonization: "/assets/illustrations/illustration-06-harmonization.png",
+  evaluation: "/assets/illustrations/illustration-07-evaluation.png",
+  aesthetics: "/assets/illustrations/illustration-08-aesthetics.png",
+  prevention: "/assets/illustrations/illustration-09-prevention.png",
+};
 
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d={paths[name]} />
-    </svg>
-  );
-}
+const serviceMotion = ["float", "breathe", "sway", "drift"] as const;
 
 export function ServicesSection() {
   return (
@@ -29,8 +23,13 @@ export function ServicesSection() {
         <Reveal>
           <SectionHeading
             id="services-title"
-            eyebrow="Especialidades e serviços"
-            title="Tratamentos pensados para unir saúde, estética e naturalidade."
+            eyebrow="Possibilidades de cuidado para o seu momento"
+            title={
+              <>
+                Cada sorriso pede
+                <span className="title-accent">um cuidado diferente.</span>
+              </>
+            }
             description="Protocolos personalizados para respeitar sua anatomia, suas expectativas e o seu estilo de vida."
             compact
           />
@@ -40,9 +39,15 @@ export function ServicesSection() {
           {services.map((service, index) => (
             <Reveal key={service.title} delay={80 + index * 45}>
               <article className="surface-card service-card">
-                <span className="service-card__icon">
-                  <ServiceIconGraphic name={service.icon} />
+                <span className="service-card__number" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
                 </span>
+                <AnimatedIllustration
+                  src={serviceArtwork[service.icon]}
+                  className={`service-card__art service-card__art--${service.icon}`}
+                  motion={serviceMotion[index % serviceMotion.length]}
+                  shimmer={service.icon === "whitening"}
+                />
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
               </article>

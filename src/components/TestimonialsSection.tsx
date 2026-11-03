@@ -13,8 +13,13 @@ export function TestimonialsSection() {
         <Reveal>
           <SectionHeading
             id="testimonials-title"
-            eyebrow="Depoimentos"
-            title="Relatos de pacientes que escolheram um cuidado mais completo."
+            eyebrow="Palavras de quem passou por aqui"
+            title={
+              <>
+                Experiências que
+                <span className="title-accent">viraram confiança.</span>
+              </>
+            }
             compact
           />
         </Reveal>
@@ -23,6 +28,9 @@ export function TestimonialsSection() {
           {testimonials.map((testimonial, index) => (
             <Reveal key={testimonial.name} delay={90 + index * 50}>
               <article className="surface-card testimonial-card">
+                <span className="testimonial-card__index" aria-hidden="true">
+                  0{index + 1}
+                </span>
                 <div className="testimonial-card__stars" aria-label="5 de 5 estrelas">
                   ★★★★★
                 </div>

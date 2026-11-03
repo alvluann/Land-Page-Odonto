@@ -1,4 +1,5 @@
 import { differentials } from "../data/content";
+import { AnimatedIllustration } from "./AnimatedIllustration";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
@@ -10,12 +11,23 @@ export function DifferentialsSection() {
       aria-labelledby="differentials-title"
     >
       <div className="container">
+        <AnimatedIllustration
+          src="/assets/illustrations/illustration-10-differentials.png"
+          className="differentials__art"
+          motion="drift"
+          shimmer
+        />
         <Reveal>
           <SectionHeading
             id="differentials-title"
-            eyebrow="Diferenciais"
-            title="Uma experiência premium, segura e desenhada para você."
-            description="Da escuta inicial ao pós-tratamento, cada etapa é pensada para gerar confiança e conforto."
+            eyebrow="O jeito Luara de cuidar"
+            title={
+              <>
+                Por que o cuidado aqui
+                <span className="title-accent">é diferente.</span>
+              </>
+            }
+            description="Da primeira conversa ao acompanhamento, cada decisão tem um motivo e cada etapa respeita o seu tempo."
             compact
           />
         </Reveal>

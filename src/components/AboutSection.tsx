@@ -1,4 +1,5 @@
 import { brand, confidencePoints } from "../data/content";
+import { AnimatedIllustration } from "./AnimatedIllustration";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
@@ -6,7 +7,7 @@ export function AboutSection() {
   return (
     <section id="sobre" className="section about" aria-labelledby="about-title">
       <div className="container about__grid">
-        <Reveal className="about__media">
+        <Reveal className="about__media" direction="left">
           <img
             src="/assets/dra-standing.jpeg"
             alt="Dra. Luara Alves em pé no consultório."
@@ -15,13 +16,27 @@ export function AboutSection() {
             loading="lazy"
             decoding="async"
           />
+          <p className="about__caption">
+            <span>Dra. Luara Alves</span>
+            Técnica, sensibilidade e presença em cada atendimento.
+          </p>
         </Reveal>
 
-        <Reveal className="about__content" delay={120}>
+        <Reveal className="about__content" delay={80} direction="right">
+          <AnimatedIllustration
+            src="/assets/illustrations/illustration-02-care.png"
+            className="about__art"
+            motion="sway"
+          />
           <SectionHeading
             id="about-title"
-            eyebrow="Quem é a Dra. Luara Alves"
-            title="Excelência técnica com cuidado verdadeiramente humano."
+            eyebrow="Antes de qualquer procedimento, existe escuta"
+            title={
+              <>
+                Técnica para transformar.
+                <span className="title-accent">Escuta para entender você.</span>
+              </>
+            }
             description={`${brand.name} atua com foco em estética dental e harmonização facial, unindo ciência, olhar artístico e uma experiência acolhedora do início ao fim.`}
             compact
           />

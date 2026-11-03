@@ -4,13 +4,19 @@ import type { CSSProperties } from "react";
 interface RevealProps extends PropsWithChildren {
   className?: string;
   delay?: number;
+  direction?: "up" | "left" | "right" | "scale";
 }
 
 function prefersReducedMotion() {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
-export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
+export function Reveal({
+  children,
+  className = "",
+  delay = 0,
+  direction = "up",
+}: RevealProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -52,6 +58,7 @@ export function Reveal({ children, className = "", delay = 0 }: RevealProps) {
     <div
       ref={ref}
       className={`reveal ${isVisible ? "is-visible" : ""} ${className}`.trim()}
+      data-reveal={direction}
       style={style}
     >
       {children}
