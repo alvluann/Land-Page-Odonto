@@ -1,4 +1,5 @@
 import { brand, confidencePoints } from "../data/content";
+import { assetUrl } from "../lib/assetUrl";
 import { AnimatedIllustration } from "./AnimatedIllustration";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
@@ -9,7 +10,7 @@ export function AboutSection() {
       <div className="container about__grid">
         <Reveal className="about__media" direction="left">
           <img
-            src="/assets/dra-standing.jpeg"
+            src={assetUrl("assets/dra-standing.jpeg")}
             alt="Dra. Luara Alves em pé no consultório."
             width={1066}
             height={1600}
@@ -24,7 +25,7 @@ export function AboutSection() {
 
         <Reveal className="about__content" delay={80} direction="right">
           <AnimatedIllustration
-            src="/assets/illustrations/illustration-02-care.png"
+            src={assetUrl("assets/illustrations/illustration-02-care.png")}
             className="about__art"
             motion="sway"
           />

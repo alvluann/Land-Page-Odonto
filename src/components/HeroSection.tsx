@@ -1,5 +1,6 @@
 import { brand, heroHighlights, whatsappHref } from "../data/content";
 import { ArrowRight, MessageCircle } from "lucide-react";
+import { assetUrl } from "../lib/assetUrl";
 import { AnimatedIllustration } from "./AnimatedIllustration";
 import { Reveal } from "./Reveal";
 
@@ -38,7 +39,7 @@ export function HeroSection() {
 
         <Reveal className="hero__visual" delay={100} direction="scale">
           <AnimatedIllustration
-            src="/assets/illustrations/illustration-01-hero.png"
+            src={assetUrl("assets/illustrations/illustration-01-hero.png")}
             className="hero__art"
             motion="drift"
             shimmer
@@ -46,7 +47,7 @@ export function HeroSection() {
           />
           <div className="hero-card">
             <img
-              src="/assets/dra-hero.jpeg"
+              src={assetUrl("assets/dra-hero.jpeg")}
               alt="Dra. Luara Alves em ambiente clínico elegante."
               width={1600}
               height={1066}

@@ -1,11 +1,12 @@
 import { Pause, Play } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { resultGallery } from "../data/content";
+import { assetUrl } from "../lib/assetUrl";
 import { AnimatedIllustration } from "./AnimatedIllustration";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
-const SPEED = 0.45; // px per animation frame
+const SPEED = 0.45;
 
 function ResultsCarousel() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -60,7 +61,6 @@ function ResultsCarousel() {
       raf = requestAnimationFrame(step);
     };
 
-    // Defer first measure until after browser paint
     raf = requestAnimationFrame(() => {
       measure();
       raf = requestAnimationFrame(step);
@@ -85,7 +85,7 @@ function ResultsCarousel() {
         <div key={item.src} className="results-scroll-carousel__item">
           <figure className="result-card">
             <img
-              src={item.src}
+              src={assetUrl(item.src)}
               alt={item.alt}
               width={1170}
               height={1170}
@@ -148,7 +148,7 @@ export function TrustSection() {
     <section id="resultados" className="section trust" aria-labelledby="trust-title">
       <div className="container trust__header">
         <AnimatedIllustration
-          src="/assets/illustrations/illustration-11-results.png"
+          src={assetUrl("assets/illustrations/illustration-11-results.png")}
           className="trust__art"
           motion="breathe"
           shimmer

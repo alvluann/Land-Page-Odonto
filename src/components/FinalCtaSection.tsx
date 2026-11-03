@@ -1,5 +1,6 @@
 import { brand, whatsappHref } from "../data/content";
 import { MessageCircle } from "lucide-react";
+import { assetUrl } from "../lib/assetUrl";
 import { AnimatedIllustration } from "./AnimatedIllustration";
 import { Reveal } from "./Reveal";
 
@@ -10,7 +11,7 @@ export function FinalCtaSection() {
         <Reveal>
           <article className="final-cta__panel">
             <AnimatedIllustration
-              src="/assets/illustrations/illustration-12-cta.png"
+              src={assetUrl("assets/illustrations/illustration-12-cta.png")}
               className="final-cta__art"
               motion="sway"
               shimmer

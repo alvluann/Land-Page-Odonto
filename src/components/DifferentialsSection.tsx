@@ -1,4 +1,5 @@
 import { differentials } from "../data/content";
+import { assetUrl } from "../lib/assetUrl";
 import { AnimatedIllustration } from "./AnimatedIllustration";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
@@ -12,7 +13,7 @@ export function DifferentialsSection() {
     >
       <div className="container">
         <AnimatedIllustration
-          src="/assets/illustrations/illustration-10-differentials.png"
+          src={assetUrl("assets/illustrations/illustration-10-differentials.png")}
           className="differentials__art"
           motion="drift"
           shimmer

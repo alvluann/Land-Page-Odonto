@@ -1,17 +1,18 @@
 import type { ServiceIcon } from "../data/content";
 import { services } from "../data/content";
+import { assetUrl } from "../lib/assetUrl";
 import { AnimatedIllustration } from "./AnimatedIllustration";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
 const serviceArtwork: Record<ServiceIcon, string> = {
-  cleaning: "/assets/illustrations/illustration-03-cleaning.png",
-  whitening: "/assets/illustrations/illustration-04-whitening.png",
-  botox: "/assets/illustrations/illustration-05-botox.png",
-  harmonization: "/assets/illustrations/illustration-06-harmonization.png",
-  evaluation: "/assets/illustrations/illustration-07-evaluation.png",
-  aesthetics: "/assets/illustrations/illustration-08-aesthetics.png",
-  prevention: "/assets/illustrations/illustration-09-prevention.png",
+  cleaning: assetUrl("assets/illustrations/illustration-03-cleaning.png"),
+  whitening: assetUrl("assets/illustrations/illustration-04-whitening.png"),
+  botox: assetUrl("assets/illustrations/illustration-05-botox.png"),
+  harmonization: assetUrl("assets/illustrations/illustration-06-harmonization.png"),
+  evaluation: assetUrl("assets/illustrations/illustration-07-evaluation.png"),
+  aesthetics: assetUrl("assets/illustrations/illustration-08-aesthetics.png"),
+  prevention: assetUrl("assets/illustrations/illustration-09-prevention.png"),
 };
 
 const serviceMotion = ["float", "breathe", "sway", "drift"] as const;

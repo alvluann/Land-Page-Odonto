@@ -1,6 +1,7 @@
 import { MessageCircle } from "lucide-react";
 import { useEffect, useState } from "react";
 import { brand, navItems, whatsappHref } from "../data/content";
+import { assetUrl } from "../lib/assetUrl";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -41,7 +42,7 @@ export function Header() {
         <a className="brand" href="#inicio" aria-label="Voltar para o início">
           <span className="brand__logo">
             <img
-              src="/assets/logo-guia.png"
+              src={assetUrl("assets/logo-guia.png")}
               alt="Logo da Dra. Luara Alves"
               width={80}
               height={80}

@@ -1,4 +1,5 @@
 import { brand, navItems, whatsappHref } from "../data/content";
+import { assetUrl } from "../lib/assetUrl";
 
 export function Footer() {
   const year = new Date().getFullYear();
@@ -8,7 +9,7 @@ export function Footer() {
       <div className="container footer__grid">
         <div className="footer__brand">
           <img
-            src="/assets/logo-cro.jpeg"
+            src={assetUrl("assets/logo-cro.jpeg")}
             alt="Identidade visual da Dra. Luara Alves."
             width={180}
             height={180}
