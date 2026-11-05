@@ -87,7 +87,7 @@ export function useCinematicMotion(scopeRef: RefObject<HTMLElement>) {
 
         if (about) {
           gsap.fromTo(
-            ".about__media > img",
+            ".about__portrait-main",
             { scale: 1.045, yPercent: -2 },
             {
               scale: 1,

@@ -1,4 +1,4 @@
-import { brand, confidencePoints } from "../data/content";
+import { aboutPortraits, brand, confidencePoints } from "../data/content";
 import { assetUrl } from "../lib/assetUrl";
 import { AnimatedIllustration } from "./AnimatedIllustration";
 import { Reveal } from "./Reveal";
@@ -10,6 +10,7 @@ export function AboutSection() {
       <div className="container about__grid">
         <Reveal className="about__media" direction="left">
           <img
+            className="about__portrait-main"
             src={assetUrl("assets/dra-standing.jpeg")}
             srcSet={`${assetUrl("assets/dra-standing-480.webp")} 480w, ${assetUrl("assets/dra-standing-800.webp")} 800w, ${assetUrl("assets/dra-standing.jpeg")} 1066w`}
             sizes="(max-width: 759px) calc(100vw - 2rem), 40vw"
@@ -19,6 +20,20 @@ export function AboutSection() {
             loading="lazy"
             decoding="async"
           />
+          <div className="about__portrait-pair" aria-label="Retratos da Dra. Luara Alves">
+            {aboutPortraits.map((portrait) => (
+              <figure key={portrait.src}>
+                <img
+                  src={assetUrl(portrait.src)}
+                  alt={portrait.alt}
+                  width={720}
+                  height={1280}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+            ))}
+          </div>
           <p className="about__caption">
             <span>Dra. Luara Alves</span>
             Técnica, sensibilidade e presença em cada atendimento.

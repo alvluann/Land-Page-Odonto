@@ -1,4 +1,3 @@
-import { assetUrl } from "../lib/assetUrl";
 export const brand = {
   name: "Dra. Luara Alves",
   role: "Cirurgiã-Dentista",
@@ -140,126 +139,73 @@ export interface ResultGalleryItem {
   format?: "portrait";
 }
 
-export const resultGallery: ResultGalleryItem[] = [
-  {
-    src: assetUrl("assets/results/resultado-legado-01.webp"),
-    alt: "Comparativo de resultado facial em paciente atendida pela Dra. Luara.",
-    label: "Resultados reais",
-    category: "Resultado facial",
-  },
-  {
-    src: assetUrl("assets/results/resultado-legado-02.webp"),
-    alt: "Antes e depois com expressão natural e harmoniosa.",
-    label: "Naturalidade",
-    category: "Resultado facial",
-  },
-  {
-    src: assetUrl("assets/results/resultado-legado-03.webp"),
-    alt: "Evolução estética com suavização de linhas de expressão.",
-    label: "Precisão clínica",
-    category: "Expressão facial",
-  },
-  {
-    src: assetUrl("assets/results/resultado-legado-05.webp"),
-    alt: "Tratamento de harmonização facial com equilíbrio de traços.",
-    label: "Personalização",
-    category: "Harmonização facial",
-  },
-  {
-    src: assetUrl("assets/results/resultado-legado-06.webp"),
-    alt: "Comparativo clínico de rejuvenescimento facial sem exageros.",
-    label: "Delicadeza",
-    category: "Resultado facial",
-  },
-  {
-    src: assetUrl("assets/results/resultado-legado-07.webp"),
-    alt: "Paciente com resultado harmonioso e sorriso mais confiante.",
-    label: "Confiança",
-    category: "Resultado facial",
-  },
-  {
-    src: assetUrl("assets/results/resultado-olhar-01.webp"),
-    alt: "Comparativo clínico da região dos olhos antes e depois do atendimento.",
-    label: "Expressão preservada",
-    category: "Região dos olhos",
+const resultLabels = [
+  "Evolução real",
+  "Identidade preservada",
+  "Cuidado individual",
+  "Naturalidade",
+  "Precisão clínica",
+  "Acompanhamento",
+] as const;
+
+export const resultGallery: ResultGalleryItem[] = Array.from(
+  { length: 54 },
+  (_, index) => ({
+    src: `results/caso-${String(index + 1).padStart(2, "0")}.webp`,
+    alt: `Registro comparativo do caso clínico ${String(index + 1).padStart(2, "0")} atendido pela Dra. Luara Alves.`,
+    label: resultLabels[index % resultLabels.length],
+    category: "Caso clínico",
     format: "portrait",
+  }),
+);
+
+export interface ExperienceMediaItem {
+  src: string;
+  poster: string;
+  title: string;
+  description: string;
+  ariaLabel: string;
+}
+
+export const experienceMedia: ExperienceMediaItem[] = [
+  {
+    src: "videos/dra-luara-apresentacao.mp4",
+    poster: "videos/dra-luara-apresentacao-poster.webp",
+    title: "Cuidado que começa na escuta",
+    description: "Dra. Luara apresenta a experiência e o olhar por trás de cada atendimento.",
+    ariaLabel: "Vídeo de apresentação da Dra. Luara Alves",
   },
   {
-    src: assetUrl("assets/results/resultado-olhar-02.webp"),
-    alt: "Comparativo clínico masculino da região dos olhos.",
-    label: "Cuidado individual",
-    category: "Região dos olhos",
-    format: "portrait",
+    src: "videos/orientacao-botox.mp4",
+    poster: "videos/orientacao-botox-poster.webp",
+    title: "Informação antes da decisão",
+    description: "Uma orientação breve sobre avaliação individual e escolhas conscientes.",
+    ariaLabel: "Vídeo de orientação da Dra. Luara sobre Botox",
   },
   {
-    src: assetUrl("assets/results/resultado-expressao-01.webp"),
-    alt: "Comparativo frontal de paciente com expressão preservada.",
-    label: "Naturalidade",
-    category: "Expressão facial",
-    format: "portrait",
+    src: "videos/preenchimento-labial.mp4",
+    poster: "videos/preenchimento-labial-poster.webp",
+    title: "Precisão em cada detalhe",
+    description: "Um registro vertical de procedimento realizado no consultório.",
+    ariaLabel: "Vídeo de procedimento labial realizado pela Dra. Luara Alves",
   },
   {
-    src: assetUrl("assets/results/resultado-expressao-02.webp"),
-    alt: "Comparativo frontal masculino antes e depois do atendimento.",
-    label: "Precisão",
-    category: "Expressão facial",
-    format: "portrait",
+    src: "videos/estetica-sorriso.mp4",
+    poster: "videos/estetica-sorriso-poster.webp",
+    title: "Sorrisos em evolução",
+    description: "Um registro odontológico que aproxima o resultado da experiência real.",
+    ariaLabel: "Vídeo de resultado odontológico apresentado pela Dra. Luara Alves",
+  },
+];
+
+export const aboutPortraits = [
+  {
+    src: "editorial/dra-luara-retrato-01.webp",
+    alt: "Retrato da Dra. Luara Alves em ambiente externo ao consultório.",
   },
   {
-    src: assetUrl("assets/results/resultado-olhar-03.webp"),
-    alt: "Comparativo lateral da região dos olhos em paciente atendida pela clínica.",
-    label: "Leveza",
-    category: "Região dos olhos",
-    format: "portrait",
-  },
-  {
-    src: assetUrl("assets/results/resultado-expressao-03.webp"),
-    alt: "Comparativo frontal com resultado facial natural.",
-    label: "Identidade",
-    category: "Expressão facial",
-    format: "portrait",
-  },
-  {
-    src: assetUrl("assets/results/resultado-harmonia-01.webp"),
-    alt: "Comparativo facial frontal antes e depois do cuidado personalizado.",
-    label: "Harmonia",
-    category: "Harmonização facial",
-    format: "portrait",
-  },
-  {
-    src: assetUrl("assets/results/resultado-olhar-04.webp"),
-    alt: "Comparativo clínico da região superior do rosto.",
-    label: "Delicadeza",
-    category: "Região dos olhos",
-    format: "portrait",
-  },
-  {
-    src: assetUrl("assets/results/resultado-sorriso-01.webp"),
-    alt: "Comparativo de sorriso antes e depois do atendimento odontológico.",
-    label: "Sorriso natural",
-    category: "Estética do sorriso",
-    format: "portrait",
-  },
-  {
-    src: assetUrl("assets/results/resultado-sorriso-02.webp"),
-    alt: "Comparativo aproximado de sorriso em paciente da clínica.",
-    label: "Estética dental",
-    category: "Estética do sorriso",
-    format: "portrait",
-  },
-  {
-    src: assetUrl("assets/results/resultado-perfil-01.webp"),
-    alt: "Comparativo de perfil facial antes e depois do atendimento.",
-    label: "Equilíbrio",
-    category: "Perfil facial",
-    format: "portrait",
-  },
-  {
-    src: assetUrl("assets/results/resultado-perfil-02.webp"),
-    alt: "Comparativo de perfil com expressão e identidade preservadas.",
-    label: "Resultado real",
-    category: "Perfil facial",
-    format: "portrait",
+    src: "editorial/dra-luara-retrato-02.webp",
+    alt: "Dra. Luara Alves em retrato espontâneo.",
   },
 ];
 
