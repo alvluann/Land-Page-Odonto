@@ -37,7 +37,7 @@ export function DifferentialsSection() {
           {differentials.map((item, index) => (
             <Reveal key={item.title} delay={80 + index * 45}>
               <article className="differential-card">
-                <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+                <span className="differential-card__mark" aria-hidden="true" />
                 <h3>{item.title}</h3>
                 <p>{item.description}</p>
               </article>

@@ -1,4 +1,6 @@
-type IllustrationMotion = "float" | "drift" | "breathe" | "sway";
+import { useEffect, useRef } from "react";
+
+type IllustrationMotion = "float" | "drift" | "breathe" | "sway" | "none";
 
 interface AnimatedIllustrationProps {
   src: string;
@@ -15,8 +17,29 @@ export function AnimatedIllustration({
   shimmer = false,
   eager = false,
 }: AnimatedIllustrationProps) {
+  const artworkRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    const artwork = artworkRef.current;
+
+    if (!artwork) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        artwork.classList.toggle("is-in-view", entry.isIntersecting);
+      },
+      { rootMargin: "12% 0px", threshold: 0.01 },
+    );
+
+    observer.observe(artwork);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <span
+      ref={artworkRef}
       className={`artwork artwork--${motion} ${className}`.trim()}
       aria-hidden="true"
     >

@@ -11,6 +11,8 @@ export function AboutSection() {
         <Reveal className="about__media" direction="left">
           <img
             src={assetUrl("assets/dra-standing.jpeg")}
+            srcSet={`${assetUrl("assets/dra-standing-480.webp")} 480w, ${assetUrl("assets/dra-standing-800.webp")} 800w, ${assetUrl("assets/dra-standing.jpeg")} 1066w`}
+            sizes="(max-width: 759px) calc(100vw - 2rem), 40vw"
             alt="Dra. Luara Alves em pé no consultório."
             width={1066}
             height={1600}
@@ -45,6 +47,11 @@ export function AboutSection() {
             Cada plano é individualizado para respeitar suas proporções, sua
             identidade e o seu momento. O objetivo é realçar o que você tem de
             mais bonito, com leveza e segurança.
+          </p>
+
+          <p className="about__manifesto">
+            O melhor resultado preserva sua expressão e devolve presença,
+            confiança e liberdade para sorrir.
           </p>
 
           <ul className="about__points">

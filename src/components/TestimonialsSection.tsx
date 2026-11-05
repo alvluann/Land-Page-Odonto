@@ -20,6 +20,7 @@ export function TestimonialsSection() {
                 <span className="title-accent">viraram confiança.</span>
               </>
             }
+            description="Relatos apresentados com identificação abreviada para preservar a privacidade de cada paciente."
             compact
           />
         </Reveal>
@@ -28,16 +29,11 @@ export function TestimonialsSection() {
           {testimonials.map((testimonial, index) => (
             <Reveal key={testimonial.name} delay={90 + index * 50}>
               <article className="surface-card testimonial-card">
-                <span className="testimonial-card__index" aria-hidden="true">
-                  0{index + 1}
-                </span>
-                <div className="testimonial-card__stars" aria-label="5 de 5 estrelas">
-                  ★★★★★
-                </div>
-                <p>{testimonial.text}</p>
+                <span className="testimonial-card__quote" aria-hidden="true">“</span>
+                <blockquote>{testimonial.text}</blockquote>
                 <footer>
                   <strong>{testimonial.name}</strong>
-                  <span>Paciente da clínica</span>
+                  <span>Identificação abreviada</span>
                 </footer>
               </article>
             </Reveal>

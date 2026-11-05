@@ -1,11 +1,37 @@
-import { brand, navItems, whatsappHref } from "../data/content";
+import { Mail, MessageCircle } from "lucide-react";
+import { brand, navItems } from "../data/content";
 import { assetUrl } from "../lib/assetUrl";
+import { TrackedWhatsAppLink } from "./TrackedWhatsAppLink";
+
+function InstagramIcon() {
+  return (
+    <svg
+      width="18"
+      height="18"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <rect width="18" height="18" x="3" y="3" rx="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.75" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
 
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
     <footer className="footer">
+      <div className="container footer__statement" aria-hidden="true">
+        <span>Cuidado que preserva</span>
+        <strong>quem você é.</strong>
+      </div>
       <div className="container footer__grid">
         <div className="footer__brand">
           <img
@@ -37,13 +63,23 @@ export function Footer() {
 
         <address className="footer__contact">
           <h3>Contato</h3>
-          <a href={whatsappHref} target="_blank" rel="noreferrer">
-            WhatsApp: {brand.phoneDisplay}
+          <TrackedWhatsAppLink placement="footer">
+            <span className="footer__contact-icon" aria-hidden="true">
+              <MessageCircle size={18} strokeWidth={1.8} />
+            </span>
+            <span>WhatsApp: {brand.phoneDisplay}</span>
+          </TrackedWhatsAppLink>
+          <a href={`mailto:${brand.email}`}>
+            <span className="footer__contact-icon" aria-hidden="true">
+              <Mail size={18} strokeWidth={1.8} />
+            </span>
+            <span>{brand.email}</span>
           </a>
-          <a href={`mailto:${brand.email}`}>{brand.email}</a>
-          <p>{brand.city}</p>
           <a href={brand.instagramUrl} target="_blank" rel="noreferrer">
-            Instagram: {brand.instagram}
+            <span className="footer__contact-icon" aria-hidden="true">
+              <InstagramIcon />
+            </span>
+            <span>Instagram: {brand.instagram}</span>
           </a>
         </address>
       </div>

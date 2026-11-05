@@ -1,11 +1,13 @@
-import { MessageCircle } from "lucide-react";
+import { Menu, MessageCircle, X } from "lucide-react";
 import { useEffect, useState } from "react";
-import { brand, navItems, whatsappHref } from "../data/content";
+import { brand, navItems } from "../data/content";
 import { assetUrl } from "../lib/assetUrl";
+import { TrackedWhatsAppLink } from "./TrackedWhatsAppLink";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeHref, setActiveHref] = useState("#inicio");
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 16);
@@ -13,6 +15,33 @@ export function Header() {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (!isMenuOpen) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMenuOpen(false);
+      }
+    };
+
+    const desktopQuery = window.matchMedia("(min-width: 980px)");
+    const handleDesktopChange = (event: MediaQueryListEvent) => {
+      if (event.matches) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    desktopQuery.addEventListener("change", handleDesktopChange);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      desktopQuery.removeEventListener("change", handleDesktopChange);
+    };
+  }, [isMenuOpen]);
 
   useEffect(() => {
     const sections = navItems
@@ -42,7 +71,7 @@ export function Header() {
         <a className="brand" href="#inicio" aria-label="Voltar para o início">
           <span className="brand__logo">
             <img
-              src={assetUrl("assets/logo-guia.png")}
+              src={assetUrl("assets/logo-guia.webp")}
               alt="Logo da Dra. Luara Alves"
               width={80}
               height={80}
@@ -72,11 +101,47 @@ export function Header() {
           ))}
         </nav>
 
-        <a className="btn btn--primary btn--compact topbar__cta" href={whatsappHref} target="_blank" rel="noreferrer">
+        <TrackedWhatsAppLink className="btn btn--primary btn--compact topbar__cta" placement="header">
           <MessageCircle className="btn__icon" size={17} aria-hidden="true" />
           Agendar
-        </a>
+        </TrackedWhatsAppLink>
+
+        <button
+          type="button"
+          className="topbar__menu-button"
+          aria-expanded={isMenuOpen}
+          aria-controls="mobile-navigation"
+          aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
+          onClick={() => setIsMenuOpen((open) => !open)}
+        >
+          {isMenuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+        </button>
       </div>
+
+      <nav
+        id="mobile-navigation"
+        className={`topbar__mobile-menu ${isMenuOpen ? "is-open" : ""}`.trim()}
+        aria-label="Navegação para celular"
+        aria-hidden={!isMenuOpen}
+      >
+        <div className="container topbar__mobile-menu-inner">
+          {navItems.map((item, index) => (
+            <a
+              key={item.href}
+              href={item.href}
+              className={activeHref === item.href ? "is-active" : ""}
+              tabIndex={isMenuOpen ? 0 : -1}
+              onClick={() => {
+                setActiveHref(item.href);
+                setIsMenuOpen(false);
+              }}
+            >
+              <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
+              {item.label}
+            </a>
+          ))}
+        </div>
+      </nav>
     </header>
   );
 }

@@ -1,20 +1,23 @@
 :root {
   /* Brand */
-  --color-beige: #ded2c8;
-  --color-terra: #b8705e;
-  --color-terra-deep: #8f4e3f;
-  --color-terra-soft: #d7a79a;
-  --color-gold-soft: #c9aa7e;
-  --color-ink: #111111;
+  --color-beige: #d8d0c6;
+  --color-terra: #a85847;
+  --color-terra-deep: #743b31;
+  --color-terra-soft: #d7a293;
+  --color-gold-soft: #b89b70;
+  --color-mineral: #aeb8b1;
+  --color-mineral-deep: #51625a;
+  --color-cocoa: #2a201c;
+  --color-ink: #171412;
   --color-white: #ffffff;
 
   /* Neutral system */
-  --color-bg: #f1ece5;
-  --color-surface: #fbf9f6;
-  --color-surface-soft: #e9e0d8;
-  --color-text-strong: #27211d;
-  --color-text: #5b514a;
-  --color-text-muted: #81736b;
+  --color-bg: #f2efea;
+  --color-surface: #fbfaf7;
+  --color-surface-soft: #e8e4de;
+  --color-text-strong: #241d19;
+  --color-text: #574d47;
+  --color-text-muted: #796d65;
   --color-border: rgba(68, 52, 44, 0.18);
   --color-border-strong: rgba(68, 52, 44, 0.38);
   --color-overlay: rgba(17, 17, 17, 0.42);
@@ -25,11 +28,11 @@
 
   --text-xs: 0.76rem;
   --text-sm: 0.875rem;
-  --text-md: clamp(0.98rem, 0.28vw + 0.93rem, 1.06rem);
+  --text-md: clamp(1rem, 0.28vw + 0.93rem, 1.06rem);
   --text-lg: clamp(1.06rem, 0.4vw + 0.96rem, 1.2rem);
 
-  --title-h1: clamp(3rem, 6.2vw, 6.2rem);
-  --title-h2: clamp(2.2rem, 4.6vw, 4.35rem);
+  --title-h1: clamp(3.25rem, 7vw, 7rem);
+  --title-h2: clamp(2.45rem, 5.2vw, 5rem);
   --title-h3: clamp(1.28rem, 1.75vw, 1.62rem);
 
   --leading-tight: 1.1;
@@ -38,9 +41,9 @@
   --tracking-wide: 0.17em;
 
   /* Layout */
-  --container-max: 78rem;
+  --container-max: 82rem;
   --container-gutter: clamp(1.25rem, 4vw, 2rem);
-  --section-space: clamp(4.5rem, 8vw, 7.5rem);
+  --section-space: clamp(5.25rem, 9vw, 9rem);
 
   /* Spacing scale */
   --space-2xs: 0.375rem;
@@ -54,9 +57,9 @@
 
   /* Radius */
   --radius-sm: 1rem;
-  --radius-md: 1.5rem;
-  --radius-lg: 2.15rem;
-  --radius-xl: 3.5rem;
+  --radius-md: 1.25rem;
+  --radius-lg: 2rem;
+  --radius-xl: 3rem;
   --radius-pill: 999px;
 
   /* Shadows */

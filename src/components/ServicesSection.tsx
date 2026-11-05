@@ -40,15 +40,15 @@ export function ServicesSection() {
           {services.map((service, index) => (
             <Reveal key={service.title} delay={80 + index * 45}>
               <article className="surface-card service-card">
-                <span className="service-card__number" aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
                 <AnimatedIllustration
                   src={serviceArtwork[service.icon]}
                   className={`service-card__art service-card__art--${service.icon}`}
                   motion={serviceMotion[index % serviceMotion.length]}
                   shimmer={service.icon === "whitening"}
                 />
+                <span className="service-card__category" aria-hidden="true">
+                  Cuidado individual
+                </span>
                 <h3>{service.title}</h3>
                 <p>{service.description}</p>
               </article>

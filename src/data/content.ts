@@ -2,13 +2,14 @@ export const brand = {
   name: "Dra. Luara Alves",
   role: "Cirurgiã-Dentista",
   cro: "CRO-SP 178662",
-  city: "São Paulo - SP",
   whatsappNumber: "5512988588015",
   phoneDisplay: "(12) 98858-8015",
   email: "contato@draluaraalves.com.br",
   instagram: "@draluaraalves",
   instagramUrl: "https://instagram.com/draluaraalves",
 };
+
+export const siteUrl = "https://lumiodontologia.net";
 
 const whatsappMessage =
   "Olá, Dra. Luara! Gostaria de agendar minha avaliação personalizada.";
@@ -22,6 +23,7 @@ export const navItems = [
   { label: "Diferenciais", href: "#diferenciais" },
   { label: "Resultados", href: "#resultados" },
   { label: "Depoimentos", href: "#depoimentos" },
+  { label: "Dúvidas", href: "#duvidas" },
 ];
 
 export const heroHighlights = [
@@ -129,36 +131,134 @@ export const confidencePoints = [
   "Compromisso com saúde, estética e bem-estar",
 ];
 
-export const resultGallery = [
+export interface ResultGalleryItem {
+  src: string;
+  alt: string;
+  label: string;
+  category: string;
+  format?: "portrait";
+}
+
+export const resultGallery: ResultGalleryItem[] = [
   {
-    src: "/assets/resultado-01.jpeg",
+    src: "/assets/results/resultado-legado-01.webp",
     alt: "Comparativo de resultado facial em paciente atendida pela Dra. Luara.",
     label: "Resultados reais",
+    category: "Resultado facial",
   },
   {
-    src: "/assets/resultado-02.jpeg",
+    src: "/assets/results/resultado-legado-02.webp",
     alt: "Antes e depois com expressão natural e harmoniosa.",
     label: "Naturalidade",
+    category: "Resultado facial",
   },
   {
-    src: "/assets/resultado-03.jpeg",
+    src: "/assets/results/resultado-legado-03.webp",
     alt: "Evolução estética com suavização de linhas de expressão.",
     label: "Precisão clínica",
+    category: "Expressão facial",
   },
   {
-    src: "/assets/resultado-05.jpeg",
+    src: "/assets/results/resultado-legado-05.webp",
     alt: "Tratamento de harmonização facial com equilíbrio de traços.",
     label: "Personalização",
+    category: "Harmonização facial",
   },
   {
-    src: "/assets/resultado-06.jpeg",
+    src: "/assets/results/resultado-legado-06.webp",
     alt: "Comparativo clínico de rejuvenescimento facial sem exageros.",
     label: "Delicadeza",
+    category: "Resultado facial",
   },
   {
-    src: "/assets/resultado-07.jpeg",
+    src: "/assets/results/resultado-legado-07.webp",
     alt: "Paciente com resultado harmonioso e sorriso mais confiante.",
     label: "Confiança",
+    category: "Resultado facial",
+  },
+  {
+    src: "/assets/results/resultado-olhar-01.webp",
+    alt: "Comparativo clínico da região dos olhos antes e depois do atendimento.",
+    label: "Expressão preservada",
+    category: "Região dos olhos",
+    format: "portrait",
+  },
+  {
+    src: "/assets/results/resultado-olhar-02.webp",
+    alt: "Comparativo clínico masculino da região dos olhos.",
+    label: "Cuidado individual",
+    category: "Região dos olhos",
+    format: "portrait",
+  },
+  {
+    src: "/assets/results/resultado-expressao-01.webp",
+    alt: "Comparativo frontal de paciente com expressão preservada.",
+    label: "Naturalidade",
+    category: "Expressão facial",
+    format: "portrait",
+  },
+  {
+    src: "/assets/results/resultado-expressao-02.webp",
+    alt: "Comparativo frontal masculino antes e depois do atendimento.",
+    label: "Precisão",
+    category: "Expressão facial",
+    format: "portrait",
+  },
+  {
+    src: "/assets/results/resultado-olhar-03.webp",
+    alt: "Comparativo lateral da região dos olhos em paciente atendida pela clínica.",
+    label: "Leveza",
+    category: "Região dos olhos",
+    format: "portrait",
+  },
+  {
+    src: "/assets/results/resultado-expressao-03.webp",
+    alt: "Comparativo frontal com resultado facial natural.",
+    label: "Identidade",
+    category: "Expressão facial",
+    format: "portrait",
+  },
+  {
+    src: "/assets/results/resultado-harmonia-01.webp",
+    alt: "Comparativo facial frontal antes e depois do cuidado personalizado.",
+    label: "Harmonia",
+    category: "Harmonização facial",
+    format: "portrait",
+  },
+  {
+    src: "/assets/results/resultado-olhar-04.webp",
+    alt: "Comparativo clínico da região superior do rosto.",
+    label: "Delicadeza",
+    category: "Região dos olhos",
+    format: "portrait",
+  },
+  {
+    src: "/assets/results/resultado-sorriso-01.webp",
+    alt: "Comparativo de sorriso antes e depois do atendimento odontológico.",
+    label: "Sorriso natural",
+    category: "Estética do sorriso",
+    format: "portrait",
+  },
+  {
+    src: "/assets/results/resultado-sorriso-02.webp",
+    alt: "Comparativo aproximado de sorriso em paciente da clínica.",
+    label: "Estética dental",
+    category: "Estética do sorriso",
+    format: "portrait",
+  },
+  {
+    src: "/assets/results/resultado-perfil-01.webp",
+    alt: "Comparativo de perfil facial antes e depois do atendimento.",
+    label: "Equilíbrio",
+    category: "Perfil facial",
+    format: "portrait",
+  },
+  {
+    src: "/assets/results/resultado-perfil-02.webp",
+    alt: "Comparativo de perfil com expressão e identidade preservadas.",
+    label: "Resultado real",
+    category: "Perfil facial",
+    format: "portrait",
   },
 ];
 
@@ -174,5 +274,38 @@ export const testimonials = [
   {
     name: "Camila R.",
     text: "A clínica transmite calma e confiança. Saí mais feliz com meu sorriso e com uma experiência muito melhor do que eu imaginava.",
+  },
+];
+
+export const faqs = [
+  {
+    question: "Como funciona a primeira avaliação?",
+    answer:
+      "A avaliação começa com uma conversa sobre suas prioridades e seu histórico. Depois do exame clínico, a Dra. Luara explica as possibilidades adequadas ao seu caso e os próximos passos.",
+  },
+  {
+    question: "Como o tratamento é definido?",
+    answer:
+      "Não existe um plano único para todas as pessoas. A indicação depende da avaliação individual, das características do sorriso ou da face e do resultado que você deseja alcançar.",
+  },
+  {
+    question: "Quanto tempo dura o tratamento?",
+    answer:
+      "O tempo varia conforme o procedimento e a necessidade de cada pessoa. A previsão de etapas e retornos é apresentada depois da avaliação, antes de qualquer decisão.",
+  },
+  {
+    question: "Os resultados são iguais para todo mundo?",
+    answer:
+      "Não. Cada organismo e cada anatomia respondem de uma forma. As imagens da página mostram casos individuais e não representam promessa de resultado.",
+  },
+  {
+    question: "Posso tirar dúvidas pelo WhatsApp?",
+    answer:
+      "Sim. A equipe pode orientar sobre agenda e funcionamento do atendimento. Dúvidas clínicas e indicações de tratamento precisam ser avaliadas individualmente pela profissional.",
+  },
+  {
+    question: "O que acontece depois que eu peço um horário?",
+    answer:
+      "A equipe continua a conversa pelo WhatsApp para verificar disponibilidade e combinar os detalhes da avaliação. O envio da mensagem não confirma automaticamente um horário.",
   },
 ];

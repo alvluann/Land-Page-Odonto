@@ -1,8 +1,9 @@
-import { brand, whatsappHref } from "../data/content";
+import { brand } from "../data/content";
 import { MessageCircle } from "lucide-react";
 import { assetUrl } from "../lib/assetUrl";
 import { AnimatedIllustration } from "./AnimatedIllustration";
 import { Reveal } from "./Reveal";
+import { TrackedWhatsAppLink } from "./TrackedWhatsAppLink";
 
 export function FinalCtaSection() {
   return (
@@ -25,10 +26,10 @@ export function FinalCtaSection() {
               pressa, qual caminho realmente faz sentido para você.
             </p>
             <div className="final-cta__actions">
-              <a className="btn btn--primary btn--large" href={whatsappHref} target="_blank" rel="noreferrer">
+              <TrackedWhatsAppLink className="btn btn--primary btn--large" placement="final_cta">
                 <MessageCircle className="btn__icon" size={19} aria-hidden="true" />
                 Quero agendar no WhatsApp
-              </a>
+              </TrackedWhatsAppLink>
             </div>
           </article>
         </Reveal>

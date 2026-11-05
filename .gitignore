@@ -13,3 +13,7 @@ pnpm-debug.log*
 
 *.tsbuildinfo
 .DS_Store
+
+# Local Codex Agent Skills
+
+/.agents/skills/
