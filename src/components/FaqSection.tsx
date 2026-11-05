@@ -1,10 +1,27 @@
 import { ChevronDown, MessageCircle } from "lucide-react";
+import { useState } from "react";
 import { faqs } from "../data/content";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { TrackedWhatsAppLink } from "./TrackedWhatsAppLink";
 
 export function FaqSection() {
+  const [openItems, setOpenItems] = useState<Set<number>>(() => new Set([0]));
+
+  const toggleItem = (index: number) => {
+    setOpenItems((currentItems) => {
+      const nextItems = new Set(currentItems);
+
+      if (nextItems.has(index)) {
+        nextItems.delete(index);
+      } else {
+        nextItems.add(index);
+      }
+
+      return nextItems;
+    });
+  };
+
   return (
     <section id="duvidas" className="section faq" aria-labelledby="faq-title">
       <div className="container faq__grid">
@@ -32,17 +49,38 @@ export function FaqSection() {
         </Reveal>
 
         <Reveal className="faq__list" direction="right" delay={80}>
-          {faqs.map((item, index) => (
-            <details key={item.question} className="faq__item" open={index === 0}>
-              <summary>
-                <span>{item.question}</span>
-                <ChevronDown size={20} aria-hidden="true" />
-              </summary>
-              <div className="faq__answer">
-                <p>{item.answer}</p>
-              </div>
-            </details>
-          ))}
+          {faqs.map((item, index) => {
+            const isOpen = openItems.has(index);
+            const questionId = `faq-question-${index}`;
+            const answerId = `faq-answer-${index}`;
+
+            return (
+              <article key={item.question} className={`faq__item ${isOpen ? "is-open" : ""}`.trim()}>
+                <button
+                  id={questionId}
+                  type="button"
+                  className="faq__question"
+                  aria-expanded={isOpen}
+                  aria-controls={answerId}
+                  onClick={() => toggleItem(index)}
+                >
+                  <span>{item.question}</span>
+                  <ChevronDown size={20} aria-hidden="true" />
+                </button>
+                <div
+                  id={answerId}
+                  className="faq__answer"
+                  role="region"
+                  aria-labelledby={questionId}
+                  aria-hidden={!isOpen}
+                >
+                  <div className="faq__answer-inner">
+                    <p>{item.answer}</p>
+                  </div>
+                </div>
+              </article>
+            );
+          })}
         </Reveal>
       </div>
     </section>

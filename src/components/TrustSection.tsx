@@ -246,6 +246,7 @@ export function TrustSection() {
           src={assetUrl("assets/illustrations/illustration-11-results.png")}
           className="trust__art"
           motion="none"
+          interactive
         />
         <span className="trust__cinematic-line" aria-hidden="true" />
         <Reveal>

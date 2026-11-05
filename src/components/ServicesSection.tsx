@@ -36,7 +36,15 @@ export function ServicesSection() {
           />
         </Reveal>
 
-        <div className="services__grid">
+        <p className="mobile-scroll-hint services__mobile-hint" aria-hidden="true">
+          Deslize para conhecer os cuidados
+        </p>
+        <div
+          className="services__grid"
+          role="region"
+          aria-label="Tratamentos disponíveis; deslize horizontalmente para navegar"
+          tabIndex={0}
+        >
           {services.map((service, index) => (
             <Reveal key={service.title} delay={80 + index * 45}>
               <article className="surface-card service-card">

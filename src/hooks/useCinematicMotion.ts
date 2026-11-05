@@ -134,6 +134,23 @@ export function useCinematicMotion(scopeRef: RefObject<HTMLElement>) {
           });
         }
       });
+
+      media.add("(max-width: 759px)", () => {
+        const hero = scope.querySelector<HTMLElement>(".hero");
+
+        if (hero) {
+          gsap.to("[data-hero-parallax]", {
+            yPercent: 3.5,
+            ease: "none",
+            scrollTrigger: {
+              trigger: hero,
+              start: "top top",
+              end: "bottom top",
+              scrub: 0.85,
+            },
+          });
+        }
+      });
     }, scope);
 
     const refresh = () => ScrollTrigger.refresh();

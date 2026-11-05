@@ -17,6 +17,7 @@ export function DifferentialsSection() {
           className="differentials__art"
           motion="drift"
           shimmer
+          interactive
         />
         <Reveal>
           <SectionHeading

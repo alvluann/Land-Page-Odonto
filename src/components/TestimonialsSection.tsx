@@ -25,7 +25,15 @@ export function TestimonialsSection() {
           />
         </Reveal>
 
-        <div className="testimonials__grid">
+        <p className="mobile-scroll-hint testimonials__mobile-hint" aria-hidden="true">
+          Deslize para ler outros relatos
+        </p>
+        <div
+          className="testimonials__grid"
+          role="region"
+          aria-label="Relatos de pacientes; deslize horizontalmente para navegar"
+          tabIndex={0}
+        >
           {testimonials.map((testimonial, index) => (
             <Reveal key={testimonial.name} delay={90 + index * 50}>
               <article className="surface-card testimonial-card">

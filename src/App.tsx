@@ -12,6 +12,7 @@ import { ServicesSection } from "./components/ServicesSection";
 import { TestimonialsSection } from "./components/TestimonialsSection";
 import { TrustSection } from "./components/TrustSection";
 import { useCinematicMotion } from "./hooks/useCinematicMotion";
+import { usePointerInteractions } from "./hooks/usePointerInteractions";
 import { assetUrl } from "./lib/assetUrl";
 
 type AppShellStyle = CSSProperties & {
@@ -22,6 +23,7 @@ type AppShellStyle = CSSProperties & {
 function App() {
   const appRef = useRef<HTMLDivElement>(null);
   useCinematicMotion(appRef);
+  usePointerInteractions(appRef);
 
   const appShellStyle: AppShellStyle = {
     "--background-organic-url": `url("${assetUrl("assets/background-organic.svg")}")`,

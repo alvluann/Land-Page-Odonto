@@ -30,6 +30,7 @@ export function AboutSection() {
             src={assetUrl("assets/illustrations/illustration-02-care.png")}
             className="about__art"
             motion="sway"
+            interactive
           />
           <SectionHeading
             id="about-title"

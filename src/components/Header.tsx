@@ -66,9 +66,16 @@ export function Header() {
   }, []);
 
   return (
-    <header className={`topbar ${isScrolled ? "is-scrolled" : ""}`.trim()}>
+    <header
+      className={`topbar ${isScrolled ? "is-scrolled" : ""} ${isMenuOpen ? "is-menu-open" : ""}`.trim()}
+    >
       <div className="container topbar__inner">
-        <a className="brand" href="#inicio" aria-label="Voltar para o início">
+        <a
+          className="brand"
+          href="#inicio"
+          aria-label="Voltar para o início"
+          onClick={() => setIsMenuOpen(false)}
+        >
           <span className="brand__logo">
             <img
               src={assetUrl("assets/logo-guia.webp")}
@@ -114,9 +121,19 @@ export function Header() {
           aria-label={isMenuOpen ? "Fechar menu" : "Abrir menu"}
           onClick={() => setIsMenuOpen((open) => !open)}
         >
-          {isMenuOpen ? <X size={20} aria-hidden="true" /> : <Menu size={20} aria-hidden="true" />}
+          {isMenuOpen ? <X size={21} aria-hidden="true" /> : <Menu size={21} aria-hidden="true" />}
         </button>
       </div>
+
+      {isMenuOpen && (
+        <button
+          type="button"
+          className="topbar__backdrop"
+          aria-label="Fechar menu"
+          tabIndex={-1}
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
 
       <nav
         id="mobile-navigation"
@@ -125,7 +142,7 @@ export function Header() {
         aria-hidden={!isMenuOpen}
       >
         <div className="container topbar__mobile-menu-inner">
-          {navItems.map((item, index) => (
+          {navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
@@ -136,7 +153,6 @@ export function Header() {
                 setIsMenuOpen(false);
               }}
             >
-              <span aria-hidden="true">{String(index + 1).padStart(2, "0")}</span>
               {item.label}
             </a>
           ))}

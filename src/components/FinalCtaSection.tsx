@@ -16,6 +16,7 @@ export function FinalCtaSection() {
               className="final-cta__art"
               motion="sway"
               shimmer
+              interactive
             />
             <p className="eyebrow">Pode começar com uma conversa</p>
             <h2 id="final-cta-title">

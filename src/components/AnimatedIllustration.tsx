@@ -8,6 +8,7 @@ interface AnimatedIllustrationProps {
   motion?: IllustrationMotion;
   shimmer?: boolean;
   eager?: boolean;
+  interactive?: boolean;
 }
 
 export function AnimatedIllustration({
@@ -16,6 +17,7 @@ export function AnimatedIllustration({
   motion = "float",
   shimmer = false,
   eager = false,
+  interactive = false,
 }: AnimatedIllustrationProps) {
   const artworkRef = useRef<HTMLSpanElement>(null);
 
@@ -41,26 +43,31 @@ export function AnimatedIllustration({
     <span
       ref={artworkRef}
       className={`artwork artwork--${motion} ${className}`.trim()}
+      data-pointer-artwork={interactive ? "" : undefined}
       aria-hidden="true"
     >
-      <img
-        className="artwork__image"
-        src={src}
-        alt=""
-        loading={eager ? "eager" : "lazy"}
-        decoding="async"
-        draggable="false"
-      />
-      {shimmer && (
-        <img
-          className="artwork__shine"
-          src={src}
-          alt=""
-          loading={eager ? "eager" : "lazy"}
-          decoding="async"
-          draggable="false"
-        />
-      )}
+      <span className="artwork__pointer">
+        <span className="artwork__motion">
+          <img
+            className="artwork__image"
+            src={src}
+            alt=""
+            loading={eager ? "eager" : "lazy"}
+            decoding="async"
+            draggable="false"
+          />
+          {shimmer && (
+            <img
+              className="artwork__shine"
+              src={src}
+              alt=""
+              loading={eager ? "eager" : "lazy"}
+              decoding="async"
+              draggable="false"
+            />
+          )}
+        </span>
+      </span>
     </span>
   );
 }

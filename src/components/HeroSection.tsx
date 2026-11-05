@@ -59,22 +59,25 @@ export function HeroSection() {
             motion="drift"
             shimmer
             eager
+            interactive
           />
           <div className="hero-card" data-hero-parallax>
-            <img
-              src={assetUrl("assets/dra-hero.jpeg")}
-              srcSet={`${assetUrl("assets/dra-hero-640.webp")} 640w, ${assetUrl("assets/dra-hero-960.webp")} 960w, ${assetUrl("assets/dra-hero.jpeg")} 1600w`}
-              sizes="(max-width: 759px) calc(100vw - 2rem), (max-width: 979px) 82vw, 46vw"
-              alt="Dra. Luara Alves em ambiente clínico elegante."
-              width={1600}
-              height={1066}
-              fetchPriority="high"
-              decoding="async"
-              data-hero-image
-            />
-            <div className="hero-card__caption" aria-hidden="true">
-              <span>LA</span>
-              <p>Naturalidade como<br />ponto de partida.</p>
+            <div className="hero-card__motion" data-pointer-hero>
+              <img
+                src={assetUrl("assets/dra-hero.jpeg")}
+                srcSet={`${assetUrl("assets/dra-hero-640.webp")} 640w, ${assetUrl("assets/dra-hero-960.webp")} 960w, ${assetUrl("assets/dra-hero.jpeg")} 1600w`}
+                sizes="(max-width: 759px) calc(100vw - 2rem), (max-width: 979px) 82vw, 46vw"
+                alt="Dra. Luara Alves em ambiente clínico elegante."
+                width={1600}
+                height={1066}
+                fetchPriority="high"
+                decoding="async"
+                data-hero-image
+              />
+              <div className="hero-card__caption" aria-hidden="true">
+                <span>LA</span>
+                <p>Naturalidade como<br />ponto de partida.</p>
+              </div>
             </div>
           </div>
 
