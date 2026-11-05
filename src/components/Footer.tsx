@@ -1,4 +1,4 @@
-import { Mail, MessageCircle } from "lucide-react";
+import { Mail, MapPin, MessageCircle } from "lucide-react";
 import { brand, navItems } from "../data/content";
 import { assetUrl } from "../lib/assetUrl";
 import { TrackedWhatsAppLink } from "./TrackedWhatsAppLink";
@@ -74,6 +74,18 @@ export function Footer() {
               <Mail size={18} strokeWidth={1.8} />
             </span>
             <span>{brand.email}</span>
+          </a>
+          <a
+            className="footer__contact-address"
+            href={brand.mapsUrl}
+            target="_blank"
+            rel="noreferrer"
+            aria-label={`Abrir no mapa: ${brand.address}`}
+          >
+            <span className="footer__contact-icon" aria-hidden="true">
+              <MapPin size={18} strokeWidth={1.8} />
+            </span>
+            <span>{brand.address}</span>
           </a>
           <a href={brand.instagramUrl} target="_blank" rel="noreferrer">
             <span className="footer__contact-icon" aria-hidden="true">

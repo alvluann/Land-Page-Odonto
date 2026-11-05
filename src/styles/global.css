@@ -919,6 +919,8 @@ h3 { font-size: var(--title-h3); line-height: 1.12; }
 .footer__links a, .footer__contact a { width: fit-content; font-size: .76rem; transition: color var(--duration-base); }
 .footer__contact { margin: 0; font-style: normal; }
 .footer__contact a { display: flex; min-height: 2.6rem; align-items: center; gap: .7rem; }
+.footer__contact-address { max-width: 26rem; align-items: flex-start !important; line-height: 1.55; }
+.footer__contact-address .footer__contact-icon { margin-top: .1rem; }
 .footer__contact-icon {
   display: grid;
   width: 2.15rem;

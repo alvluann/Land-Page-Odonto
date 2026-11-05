@@ -7,6 +7,10 @@ export const brand = {
   email: "contato@draluaraalves.com.br",
   instagram: "@draluaraalves",
   instagramUrl: "https://instagram.com/draluaraalves",
+  address:
+    "Avenida Alfredo Ignácio Nogueira Penido, 335, Parque Residencial Aquarius, São José dos Campos - SP, 12246-000, Brasil",
+  mapsUrl:
+    "https://www.google.com/maps/search/?api=1&query=Avenida%20Alfredo%20Ign%C3%A1cio%20Nogueira%20Penido%2C%20335%2C%20Parque%20Residencial%20Aquarius%2C%20S%C3%A3o%20Jos%C3%A9%20dos%20Campos%20-%20SP%2C%2012246-000%2C%20Brasil",
 };
 
 export const siteUrl = "https://lumiodontologia.net";
