@@ -13,7 +13,7 @@ export function AboutSection() {
             className="about__portrait-main"
             src={assetUrl("assets/dra-standing.jpeg")}
             srcSet={`${assetUrl("assets/dra-standing-480.webp")} 480w, ${assetUrl("assets/dra-standing-800.webp")} 800w, ${assetUrl("assets/dra-standing.jpeg")} 1066w`}
-            sizes="(max-width: 759px) calc(100vw - 2rem), 40vw"
+            sizes="(max-width: 759px) min(82vw, 18.5rem), 40vw"
             alt="Dra. Luara Alves em pé no consultório."
             width={1066}
             height={1600}

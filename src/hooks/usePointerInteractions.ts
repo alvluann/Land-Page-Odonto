@@ -9,11 +9,16 @@ function clamp(value: number, min: number, max: number) {
 
 function bindPointerMove(
   target: HTMLElement,
-  onMove: (event: PointerEvent) => void,
+  onMove: (event: PointerEvent, rect: DOMRect) => void,
   onLeave: () => void,
 ): Cleanup {
   let frame = 0;
   let latestEvent: PointerEvent | null = null;
+  let targetRect: DOMRect | null = null;
+
+  const handleEnter = () => {
+    targetRect = target.getBoundingClientRect();
+  };
 
   const handleMove = (event: PointerEvent) => {
     latestEvent = event;
@@ -21,7 +26,10 @@ function bindPointerMove(
 
     frame = window.requestAnimationFrame(() => {
       frame = 0;
-      if (latestEvent) onMove(latestEvent);
+      if (latestEvent) {
+        targetRect ??= target.getBoundingClientRect();
+        onMove(latestEvent, targetRect);
+      }
     });
   };
 
@@ -29,14 +37,17 @@ function bindPointerMove(
     if (frame) window.cancelAnimationFrame(frame);
     frame = 0;
     latestEvent = null;
+    targetRect = null;
     onLeave();
   };
 
+  target.addEventListener("pointerenter", handleEnter, { passive: true });
   target.addEventListener("pointermove", handleMove, { passive: true });
   target.addEventListener("pointerleave", handleLeave);
 
   return () => {
     if (frame) window.cancelAnimationFrame(frame);
+    target.removeEventListener("pointerenter", handleEnter);
     target.removeEventListener("pointermove", handleMove);
     target.removeEventListener("pointerleave", handleLeave);
     onLeave();
@@ -49,7 +60,9 @@ export function usePointerInteractions(scopeRef: RefObject<HTMLElement>) {
     if (!scope) return;
 
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const finePointerQuery = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const finePointerQuery = window.matchMedia(
+      "(min-width: 980px) and (hover: hover) and (pointer: fine)",
+    );
     let cleanupInteractions: Cleanup = () => undefined;
 
     const resetInteractiveStyles = () => {
@@ -92,8 +105,7 @@ export function usePointerInteractions(scopeRef: RefObject<HTMLElement>) {
         cleanups.push(
           bindPointerMove(
             button,
-            (event) => {
-              const rect = button.getBoundingClientRect();
+            (event, rect) => {
               const normalizedX = clamp((event.clientX - rect.left) / rect.width, 0, 1) * 2 - 1;
               const normalizedY = clamp((event.clientY - rect.top) / rect.height, 0, 1) * 2 - 1;
 
@@ -116,8 +128,7 @@ export function usePointerInteractions(scopeRef: RefObject<HTMLElement>) {
           cleanups.push(
             bindPointerMove(
               card,
-              (event) => {
-                const rect = card.getBoundingClientRect();
+              (event, rect) => {
                 const x = clamp((event.clientX - rect.left) / rect.width, 0, 1);
                 const y = clamp((event.clientY - rect.top) / rect.height, 0, 1);
 
@@ -144,8 +155,7 @@ export function usePointerInteractions(scopeRef: RefObject<HTMLElement>) {
         cleanups.push(
           bindPointerMove(
             interactionArea,
-            (event) => {
-              const rect = interactionArea.getBoundingClientRect();
+            (event, rect) => {
               const x = clamp((event.clientX - rect.left) / rect.width, 0, 1);
               const y = clamp((event.clientY - rect.top) / rect.height, 0, 1);
 
@@ -177,8 +187,7 @@ export function usePointerInteractions(scopeRef: RefObject<HTMLElement>) {
         cleanups.push(
           bindPointerMove(
             interactionArea,
-            (event) => {
-              const rect = interactionArea.getBoundingClientRect();
+            (event, rect) => {
               const x = clamp((event.clientX - rect.left) / rect.width, 0, 1) * 2 - 1;
               const y = clamp((event.clientY - rect.top) / rect.height, 0, 1) * 2 - 1;
 

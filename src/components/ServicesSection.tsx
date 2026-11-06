@@ -21,24 +21,41 @@ export function ServicesSection() {
   return (
     <section id="servicos" className="section services" aria-labelledby="services-title">
       <div className="container">
-        <Reveal>
-          <SectionHeading
-            id="services-title"
-            eyebrow="Possibilidades de cuidado para o seu momento"
-            title={
-              <>
-                Cada sorriso pede
-                <span className="title-accent">um cuidado diferente.</span>
-              </>
-            }
-            description="Protocolos personalizados para respeitar sua anatomia, suas expectativas e o seu estilo de vida."
-            compact
-          />
-        </Reveal>
+        <div className="services__intro">
+          <Reveal className="services__intro-copy">
+            <SectionHeading
+              id="services-title"
+              eyebrow="Possibilidades de cuidado para o seu momento"
+              title={
+                <>
+                  Cada sorriso pede
+                  <span className="title-accent">um cuidado diferente.</span>
+                </>
+              }
+              description="Protocolos personalizados para respeitar sua anatomia, suas expectativas e o seu estilo de vida."
+              compact
+            />
+          </Reveal>
 
-        <p className="mobile-scroll-hint services__mobile-hint" aria-hidden="true">
-          Deslize para conhecer os cuidados
-        </p>
+          <Reveal className="services__portrait" direction="right" delay={90}>
+            <figure className="editorial-portrait services__portrait-frame">
+              <img
+                src={assetUrl("imgs/assets/WhatsApp Image 2026-04-22 at 10.29.25 (4).jpeg")}
+                alt="Dra. Luara Alves em retrato profissional no consultório."
+                width={1600}
+                height={1066}
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 759px) min(82vw, 18.5rem), 34vw"
+              />
+              <figcaption>
+                <span>Planejamento com presença</span>
+                <small>Uma experiência pensada nos detalhes.</small>
+              </figcaption>
+            </figure>
+          </Reveal>
+        </div>
+
         <div
           className="services__grid"
           role="region"

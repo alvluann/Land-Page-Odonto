@@ -1,4 +1,5 @@
 import { testimonials } from "../data/content";
+import { assetUrl } from "../lib/assetUrl";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
@@ -10,24 +11,41 @@ export function TestimonialsSection() {
       aria-labelledby="testimonials-title"
     >
       <div className="container">
-        <Reveal>
-          <SectionHeading
-            id="testimonials-title"
-            eyebrow="Palavras de quem passou por aqui"
-            title={
-              <>
-                Experiências que
-                <span className="title-accent">viraram confiança.</span>
-              </>
-            }
-            description="Relatos apresentados com identificação abreviada para preservar a privacidade de cada paciente."
-            compact
-          />
-        </Reveal>
+        <div className="testimonials__intro">
+          <Reveal className="testimonials__portrait" direction="left">
+            <figure className="editorial-portrait testimonials__portrait-frame">
+              <img
+                src={assetUrl("editorial/dra-luara-retrato-02.webp")}
+                alt="Dra. Luara Alves em um retrato espontâneo."
+                width={720}
+                height={1280}
+                loading="lazy"
+                decoding="async"
+                sizes="(max-width: 759px) min(82vw, 18.5rem), 34vw"
+              />
+              <figcaption>
+                <span>Presença que acolhe</span>
+                <small>Escuta e cuidado em cada etapa.</small>
+              </figcaption>
+            </figure>
+          </Reveal>
 
-        <p className="mobile-scroll-hint testimonials__mobile-hint" aria-hidden="true">
-          Deslize para ler outros relatos
-        </p>
+          <Reveal className="testimonials__intro-copy" direction="right" delay={90}>
+            <SectionHeading
+              id="testimonials-title"
+              eyebrow="Palavras de quem passou por aqui"
+              title={
+                <>
+                  Experiências que
+                  <span className="title-accent">viraram confiança.</span>
+                </>
+              }
+              description="Relatos apresentados com identificação abreviada para preservar a privacidade de cada paciente."
+              compact
+            />
+          </Reveal>
+        </div>
+
         <div
           className="testimonials__grid"
           role="region"

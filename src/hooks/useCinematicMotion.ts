@@ -40,9 +40,10 @@ export function useCinematicMotion(scopeRef: RefObject<HTMLElement>) {
           "[data-hero-visual]",
           {
             autoAlpha: 0,
-            clipPath: "inset(0 0 100% 0 round 5rem 1.5rem 5rem 2rem)",
-            duration: 1.05,
-            ease: "power4.inOut",
+            y: 28,
+            scale: 0.985,
+            duration: 0.88,
+            ease: "power3.out",
           },
           0.08,
         )
@@ -64,10 +65,12 @@ export function useCinematicMotion(scopeRef: RefObject<HTMLElement>) {
           },
           0.64,
         )
-        .set("[data-hero-visual]", { clearProps: "clipPath" })
+        .set("[data-hero-visual]", {
+          clearProps: "transform,opacity,visibility",
+        })
         .set("[data-hero-image]", { clearProps: "transform" });
 
-      media.add("(min-width: 760px)", () => {
+      media.add("(min-width: 980px) and (hover: hover) and (pointer: fine)", () => {
         const hero = scope.querySelector<HTMLElement>(".hero");
         const about = scope.querySelector<HTMLElement>(".about");
         const trust = scope.querySelector<HTMLElement>(".trust");
@@ -135,22 +138,6 @@ export function useCinematicMotion(scopeRef: RefObject<HTMLElement>) {
         }
       });
 
-      media.add("(max-width: 759px)", () => {
-        const hero = scope.querySelector<HTMLElement>(".hero");
-
-        if (hero) {
-          gsap.to("[data-hero-parallax]", {
-            yPercent: 3.5,
-            ease: "none",
-            scrollTrigger: {
-              trigger: hero,
-              start: "top top",
-              end: "bottom top",
-              scrub: 0.85,
-            },
-          });
-        }
-      });
     }, scope);
 
     const refresh = () => ScrollTrigger.refresh();

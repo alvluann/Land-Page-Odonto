@@ -6,15 +6,44 @@ import { TrackedWhatsAppLink } from "./TrackedWhatsAppLink";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isHeaderHidden, setIsHeaderHidden] = useState(false);
   const [activeHref, setActiveHref] = useState("#inicio");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 16);
-    handleScroll();
+    let frame = 0;
+    let previousScrollY = window.scrollY;
+
+    const updateScrolledState = () => {
+      frame = 0;
+      const currentScrollY = window.scrollY;
+      const scrollDelta = currentScrollY - previousScrollY;
+      const nextIsScrolled = currentScrollY > 16;
+
+      setIsScrolled((current) =>
+        current === nextIsScrolled ? current : nextIsScrolled,
+      );
+
+      if (isMenuOpen || currentScrollY < 48 || scrollDelta < -7) {
+        setIsHeaderHidden(false);
+      } else if (currentScrollY > 120 && scrollDelta > 7) {
+        setIsHeaderHidden(true);
+      }
+
+      previousScrollY = currentScrollY;
+    };
+
+    const handleScroll = () => {
+      if (!frame) frame = requestAnimationFrame(updateScrolledState);
+    };
+
+    updateScrolledState();
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    return () => {
+      if (frame) cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isMenuOpen]);
 
   useEffect(() => {
     if (!isMenuOpen) {
@@ -67,7 +96,7 @@ export function Header() {
 
   return (
     <header
-      className={`topbar ${isScrolled ? "is-scrolled" : ""} ${isMenuOpen ? "is-menu-open" : ""}`.trim()}
+      className={`topbar ${isScrolled ? "is-scrolled" : ""} ${isHeaderHidden ? "is-hidden" : ""} ${isMenuOpen ? "is-menu-open" : ""}`.trim()}
     >
       <div className="container topbar__inner">
         <a

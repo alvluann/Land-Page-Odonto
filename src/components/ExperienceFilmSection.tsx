@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useCallback, useRef } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 import { ArrowLeft, ArrowRight, MessageCircle } from "lucide-react";
 import { experienceMedia } from "../data/content";
 import { assetUrl } from "../lib/assetUrl";
@@ -7,18 +8,26 @@ import { Reveal } from "./Reveal";
 import { TrackedWhatsAppLink } from "./TrackedWhatsAppLink";
 
 export function ExperienceFilmSection() {
-  const railRef = useRef<HTMLDivElement>(null);
+  const railRef = useRef<HTMLDivElement | null>(null);
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    containScroll: false,
+    loop: true,
+    slidesToScroll: 1,
+  });
+
+  const setRailRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      railRef.current = node;
+      emblaRef(node);
+    },
+    [emblaRef],
+  );
 
   const scrollRail = (direction: -1 | 1) => {
-    const rail = railRef.current;
-    if (!rail) return;
-
-    rail.scrollBy({
-      left: direction * Math.min(rail.clientWidth * 0.82, 580),
-      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
-        ? "auto"
-        : "smooth",
-    });
+    if (!emblaApi) return;
+    if (direction === -1) emblaApi.scrollPrev();
+    else emblaApi.scrollNext();
   };
 
   const handleVideoPlay = (currentVideo: HTMLVideoElement, index: number) => {
@@ -56,7 +65,6 @@ export function ExperienceFilmSection() {
           <div className="experience-film__gallery-header">
             <p>
               <span>{experienceMedia.length} registros</span>
-              Deslize para conhecer
             </p>
             <div className="experience-film__controls" aria-label="Controles da galeria">
               <button
@@ -76,31 +84,45 @@ export function ExperienceFilmSection() {
             </div>
           </div>
 
-          <div ref={railRef} className="experience-film__rail">
-            {experienceMedia.map((item, index) => (
-              <article className="experience-film__card" key={item.src}>
-                <div className="experience-film__frame">
-                  <video
-                    controls
-                    playsInline
-                    preload="metadata"
-                    poster={assetUrl(item.poster)}
-                    width={576}
-                    height={1024}
-                    aria-label={item.ariaLabel}
-                    onPlay={(event) => handleVideoPlay(event.currentTarget, index)}
-                  >
-                    <source src={assetUrl(item.src)} type="video/mp4" />
-                    Seu navegador não consegue reproduzir este vídeo.
-                  </video>
-                  <span className="experience-film__index" aria-hidden="true">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </article>
-            ))}
+          <div
+            ref={setRailRef}
+            className="experience-film__rail"
+            role="region"
+            aria-roledescription="carrossel"
+            aria-label="Registros da experiência de atendimento"
+          >
+            <div className="experience-film__rail-track">
+              {experienceMedia.map((item, index) => (
+                <article
+                  className="experience-film__card"
+                  key={item.src}
+                  role="group"
+                  aria-roledescription="slide"
+                  aria-label={`${index + 1} de ${experienceMedia.length}`}
+                >
+                  <div className="experience-film__frame">
+                    <video
+                      controls
+                      playsInline
+                      preload="metadata"
+                      poster={assetUrl(item.poster)}
+                      width={576}
+                      height={1024}
+                      aria-label={item.ariaLabel}
+                      onPlay={(event) => handleVideoPlay(event.currentTarget, index)}
+                    >
+                      <source src={assetUrl(item.src)} type="video/mp4" />
+                      Seu navegador não consegue reproduzir este vídeo.
+                    </video>
+                    <span className="experience-film__index" aria-hidden="true">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                  </div>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </article>
+              ))}
+            </div>
           </div>
         </Reveal>
       </div>

@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import type { MutableRefObject } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { resultGallery } from "../data/content";
 import type { ResultGalleryItem } from "../data/content";
 import { assetUrl } from "../lib/assetUrl";
@@ -9,21 +8,24 @@ import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
 const SPEED = 28;
+const FIRST_ROW_ITEMS = resultGallery.filter((_, index) => index % 2 === 0);
+const SECOND_ROW_ITEMS = resultGallery.filter((_, index) => index % 2 !== 0);
 
 type MarqueeDirection = "left" | "right";
 
 interface ResultsMarqueeRowProps {
   direction: MarqueeDirection;
   items: ResultGalleryItem[];
-  pausedRef: MutableRefObject<boolean>;
   reducedMotion: boolean;
 }
 
-function ResultsMarqueeRow({ direction, items: rowItems, pausedRef, reducedMotion }: ResultsMarqueeRowProps) {
+const ResultsMarqueeRow = memo(function ResultsMarqueeRow({
+  direction,
+  items: rowItems,
+  reducedMotion,
+}: ResultsMarqueeRowProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const setRef = useRef<HTMLDivElement>(null);
-  const progressRef = useRef(0);
-  const lastTimeRef = useRef<number | null>(null);
 
   useEffect(() => {
     const track = trackRef.current;
@@ -31,49 +33,41 @@ function ResultsMarqueeRow({ direction, items: rowItems, pausedRef, reducedMotio
     if (!track || !set) return;
 
     if (reducedMotion) {
-      progressRef.current = 0;
-      track.style.transform = "";
+      track.classList.remove("is-ready");
+      track.style.removeProperty("--marquee-duration");
+      track.style.removeProperty("--marquee-offset");
       return;
     }
 
-    let raf = 0;
-    let loopAt = 0;
+    let measureFrame = 0;
 
     const measure = () => {
-      loopAt = set.offsetWidth;
+      if (measureFrame) cancelAnimationFrame(measureFrame);
+
+      measureFrame = requestAnimationFrame(() => {
+        const loopWidth = set.getBoundingClientRect().width;
+        if (loopWidth <= 0) return;
+
+        track.style.setProperty("--marquee-offset", `${-loopWidth}px`);
+        track.style.setProperty(
+          "--marquee-duration",
+          `${Math.max(loopWidth / SPEED, 20).toFixed(2)}s`,
+        );
+        track.classList.add("is-ready");
+      });
     };
 
-    const step = (time: number) => {
-      const previousTime = lastTimeRef.current ?? time;
-      const deltaSeconds = Math.min(time - previousTime, 64) / 1000;
-      lastTimeRef.current = time;
-
-      if (!pausedRef.current && loopAt > 0) {
-        progressRef.current += SPEED * deltaSeconds;
-        if (progressRef.current >= loopAt) {
-          progressRef.current -= loopAt;
-        }
-
-        const offset = direction === "left" ? -progressRef.current : progressRef.current - loopAt;
-        track.style.transform = `translateX(${offset}px)`;
-      }
-      raf = requestAnimationFrame(step);
-    };
-
-    raf = requestAnimationFrame(() => {
-      measure();
-      raf = requestAnimationFrame(step);
-    });
+    measure();
 
     const resizeObserver = new ResizeObserver(measure);
     resizeObserver.observe(set);
 
     return () => {
-      cancelAnimationFrame(raf);
+      if (measureFrame) cancelAnimationFrame(measureFrame);
       resizeObserver.disconnect();
-      lastTimeRef.current = null;
+      track.classList.remove("is-ready");
     };
-  }, [direction, pausedRef, reducedMotion]);
+  }, [reducedMotion]);
 
   const orderedItems = direction === "left" ? rowItems : [...rowItems].reverse();
   const cards = orderedItems.map((item) => (
@@ -110,12 +104,11 @@ function ResultsMarqueeRow({ direction, items: rowItems, pausedRef, reducedMotio
       </div>
     </div>
   );
-}
+});
 
 function ResultsCarousel() {
   const carouselRef = useRef<HTMLDivElement>(null);
   const hasTrackedEngagementRef = useRef(false);
-  const pausedRef = useRef(false);
   const [reducedMotion, setReducedMotion] = useState(() =>
     typeof window !== "undefined"
       ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
@@ -167,10 +160,6 @@ function ResultsCarousel() {
     return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, []);
 
-  useEffect(() => {
-    pausedRef.current = reducedMotion || !isInView || interactionPaused || !isDocumentVisible;
-  }, [interactionPaused, isDocumentVisible, isInView, reducedMotion]);
-
   const updateInteractionPause = (paused: boolean) => {
     setIsInteractionPaused(paused);
   };
@@ -181,13 +170,12 @@ function ResultsCarousel() {
     trackConversion("results_gallery_engaged", "results_gallery");
   };
 
-  const firstRowItems = resultGallery.filter((_, index) => index % 2 === 0);
-  const secondRowItems = resultGallery.filter((_, index) => index % 2 !== 0);
+  const isPaused = reducedMotion || !isInView || interactionPaused || !isDocumentVisible;
 
   return (
     <div
       ref={carouselRef}
-      className={`results-scroll-carousel ${reducedMotion ? "is-static" : ""}`.trim()}
+      className={`results-scroll-carousel ${reducedMotion ? "is-static" : ""} ${isPaused ? "is-paused" : ""}`.trim()}
       role="region"
       aria-label="Galeria de resultados clínicos; a animação pausa ao receber foco"
       tabIndex={0}
@@ -214,14 +202,12 @@ function ResultsCarousel() {
           <>
             <ResultsMarqueeRow
               direction="right"
-              items={firstRowItems}
-              pausedRef={pausedRef}
+              items={FIRST_ROW_ITEMS}
               reducedMotion={reducedMotion}
             />
             <ResultsMarqueeRow
               direction="left"
-              items={secondRowItems}
-              pausedRef={pausedRef}
+              items={SECOND_ROW_ITEMS}
               reducedMotion={reducedMotion}
             />
           </>
@@ -229,7 +215,6 @@ function ResultsCarousel() {
           <ResultsMarqueeRow
             direction="left"
             items={resultGallery}
-            pausedRef={pausedRef}
             reducedMotion={reducedMotion}
           />
         )}
@@ -242,6 +227,24 @@ export function TrustSection() {
   return (
     <section id="resultados" className="section trust" aria-labelledby="trust-title">
       <div className="container trust__header">
+        <Reveal className="trust__portrait" direction="left">
+          <figure className="editorial-portrait trust__portrait-frame">
+            <img
+              src={assetUrl("editorial/dra-luara-retrato-01.webp")}
+              alt="Dra. Luara Alves em retrato profissional."
+              width={720}
+              height={1280}
+              loading="lazy"
+              decoding="async"
+              sizes="(max-width: 759px) min(82vw, 18.5rem), 32vw"
+            />
+            <figcaption>
+              <span>Olhar clínico e individual</span>
+              <small>Resultados que preservam identidade.</small>
+            </figcaption>
+          </figure>
+        </Reveal>
+
         <AnimatedIllustration
           src={assetUrl("assets/illustrations/illustration-11-results.png")}
           className="trust__art"
@@ -249,7 +252,7 @@ export function TrustSection() {
           interactive
         />
         <span className="trust__cinematic-line" aria-hidden="true" />
-        <Reveal>
+        <Reveal className="trust__intro-copy" direction="right" delay={90}>
           <SectionHeading
             id="trust-title"
             eyebrow="Casos reais, escolhas individuais"

@@ -66,7 +66,7 @@ export function HeroSection() {
               <img
                 src={assetUrl("assets/dra-hero.jpeg")}
                 srcSet={`${assetUrl("assets/dra-hero-640.webp")} 640w, ${assetUrl("assets/dra-hero-960.webp")} 960w, ${assetUrl("assets/dra-hero.jpeg")} 1600w`}
-                sizes="(max-width: 759px) calc(100vw - 2rem), (max-width: 979px) 82vw, 46vw"
+                sizes="(max-width: 759px) min(88vw, 20.5rem), (max-width: 979px) 82vw, 46vw"
                 alt="Dra. Luara Alves em ambiente clínico elegante."
                 width={1600}
                 height={1066}

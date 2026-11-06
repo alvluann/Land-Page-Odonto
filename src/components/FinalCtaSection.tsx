@@ -18,6 +18,18 @@ export function FinalCtaSection() {
               shimmer
               interactive
             />
+            <figure className="final-cta__portrait">
+              <img
+                src={assetUrl("assets/dra-hero.jpeg")}
+                srcSet={`${assetUrl("assets/dra-hero-640.webp")} 640w, ${assetUrl("assets/dra-hero-960.webp")} 960w, ${assetUrl("assets/dra-hero.jpeg")} 1600w`}
+                sizes="(max-width: 759px) calc(100vw - 2rem), 38vw"
+                alt="Dra. Luara Alves em seu ambiente de atendimento."
+                width={1600}
+                height={1066}
+                loading="lazy"
+                decoding="async"
+              />
+            </figure>
             <p className="eyebrow">Pode começar com uma conversa</p>
             <h2 id="final-cta-title">
               Vamos conversar sobre o sorriso que faz sentido para você?
