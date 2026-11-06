@@ -1,12 +1,9 @@
 import { ChevronDown, MessageCircle } from "lucide-react";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { faqs } from "../data/content";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { TrackedWhatsAppLink } from "./TrackedWhatsAppLink";
-
-const FAQ_ANIMATION_DURATION = 360;
-const FAQ_ANIMATION_EASING = "cubic-bezier(0.22, 1, 0.36, 1)";
 
 interface FaqItemProps {
   index: number;
@@ -16,85 +13,6 @@ interface FaqItemProps {
 }
 
 function FaqItem({ index, isOpen, item, onToggle }: FaqItemProps) {
-  const answerRef = useRef<HTMLDivElement>(null);
-  const animationRef = useRef<Animation | null>(null);
-  const isFirstRenderRef = useRef(true);
-
-  useLayoutEffect(() => {
-    const answer = answerRef.current;
-
-    if (!answer) return;
-
-    const runningAnimation = animationRef.current;
-
-    if (runningAnimation) {
-      try {
-        runningAnimation.commitStyles();
-      } catch {
-        // Preserva o estado visual quando commitStyles não está disponível.
-      }
-
-      runningAnimation.cancel();
-      animationRef.current = null;
-    }
-
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    ).matches;
-
-    if (isFirstRenderRef.current || prefersReducedMotion) {
-      answer.style.height = isOpen ? "auto" : "0px";
-      answer.style.opacity = isOpen ? "1" : "0";
-      answer.style.willChange = "auto";
-      isFirstRenderRef.current = false;
-      return;
-    }
-
-    const startHeight = answer.getBoundingClientRect().height;
-    const endHeight = isOpen ? answer.scrollHeight : 0;
-    const computedOpacity = Number.parseFloat(getComputedStyle(answer).opacity);
-    const startOpacity = Number.isFinite(computedOpacity)
-      ? String(computedOpacity)
-      : isOpen
-        ? "0"
-        : "1";
-
-    answer.style.height = `${startHeight}px`;
-    answer.style.opacity = startOpacity;
-    answer.style.willChange = "height, opacity";
-
-    const animation = answer.animate(
-      [
-        { height: `${startHeight}px`, opacity: startOpacity },
-        { height: `${endHeight}px`, opacity: isOpen ? "1" : "0" },
-      ],
-      {
-        duration: FAQ_ANIMATION_DURATION,
-        easing: FAQ_ANIMATION_EASING,
-        fill: "forwards",
-      },
-    );
-
-    animationRef.current = animation;
-
-    animation.onfinish = () => {
-      if (animationRef.current !== animation) return;
-
-      answer.style.height = isOpen ? "auto" : "0px";
-      answer.style.opacity = isOpen ? "1" : "0";
-      answer.style.willChange = "auto";
-      animation.cancel();
-      animationRef.current = null;
-    };
-  }, [isOpen]);
-
-  useEffect(
-    () => () => {
-      animationRef.current?.cancel();
-    },
-    [],
-  );
-
   const questionId = `faq-question-${index}`;
   const answerId = `faq-answer-${index}`;
 
@@ -112,7 +30,6 @@ function FaqItem({ index, isOpen, item, onToggle }: FaqItemProps) {
         <ChevronDown size={20} aria-hidden="true" />
       </button>
       <div
-        ref={answerRef}
         id={answerId}
         className="faq__answer"
         role="region"

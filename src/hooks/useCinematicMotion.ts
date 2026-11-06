@@ -1,152 +1,138 @@
 import type { RefObject } from "react";
-import { useLayoutEffect } from "react";
-import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect } from "react";
 
-gsap.registerPlugin(ScrollTrigger);
+const DESKTOP_MOTION_QUERY = "(min-width: 980px) and (hover: hover) and (pointer: fine)";
 
 export function useCinematicMotion(scopeRef: RefObject<HTMLElement>) {
-  useLayoutEffect(() => {
+  useEffect(() => {
     const scope = scopeRef.current;
 
     if (!scope || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
     }
 
-    const media = gsap.matchMedia(scope);
-    const context = gsap.context(() => {
-      const heroTimeline = gsap.timeline({
-        defaults: { ease: "power3.out" },
-      });
+    const desktopMotion = window.matchMedia(DESKTOP_MOTION_QUERY);
+    let cancelled = false;
+    let loadTimer = 0;
+    let cleanupMotion: (() => void) | undefined;
 
-      heroTimeline
-        .from("[data-hero-line]", {
-          yPercent: 112,
-          duration: 0.9,
-          stagger: 0.11,
-          ease: "power4.out",
-        })
-        .from(
-          "[data-hero-reveal]",
-          {
-            autoAlpha: 0,
-            y: 24,
-            duration: 0.68,
-            stagger: 0.075,
-          },
-          0.14,
-        )
-        .from(
-          "[data-hero-visual]",
-          {
-            autoAlpha: 0,
-            y: 28,
-            scale: 0.985,
-            duration: 0.88,
-            ease: "power3.out",
-          },
-          0.08,
-        )
-        .from(
-          "[data-hero-image]",
-          {
-            scale: 1.1,
-            duration: 1.35,
-            ease: "power3.out",
-          },
-          0.12,
-        )
-        .from(
-          ".floating-tag--cro",
-          {
-            autoAlpha: 0,
-            x: -18,
-            duration: 0.62,
-          },
-          0.64,
-        )
-        .set("[data-hero-visual]", {
-          clearProps: "transform,opacity,visibility",
-        })
-        .set("[data-hero-image]", { clearProps: "transform" });
+    const loadDesktopMotion = () => {
+      if (!desktopMotion.matches || loadTimer || cleanupMotion) return;
 
-      media.add("(min-width: 980px) and (hover: hover) and (pointer: fine)", () => {
-        const hero = scope.querySelector<HTMLElement>(".hero");
-        const about = scope.querySelector<HTMLElement>(".about");
-        const trust = scope.querySelector<HTMLElement>(".trust");
+      loadTimer = window.setTimeout(async () => {
+        loadTimer = 0;
 
-        if (hero) {
-          gsap.to("[data-hero-parallax]", {
-            yPercent: 9,
-            ease: "none",
-            scrollTrigger: {
-              trigger: hero,
-              start: "top top",
-              end: "bottom top",
-              scrub: 0.7,
-            },
-          });
+        let motionModules;
+
+        try {
+          motionModules = await Promise.all([
+            import("gsap"),
+            import("gsap/ScrollTrigger"),
+          ]);
+        } catch {
+          return;
         }
 
-        if (about) {
-          gsap.fromTo(
-            ".about__portrait-main",
-            { scale: 1.045, yPercent: -2 },
-            {
-              scale: 1,
-              yPercent: 3,
+        const [{ gsap }, { ScrollTrigger }] = motionModules;
+
+        if (cancelled || !desktopMotion.matches) return;
+
+        gsap.registerPlugin(ScrollTrigger);
+        const context = gsap.context(() => {
+          const hero = scope.querySelector<HTMLElement>(".hero");
+          const about = scope.querySelector<HTMLElement>(".about");
+          const trust = scope.querySelector<HTMLElement>(".trust");
+
+          if (hero) {
+            gsap.to("[data-hero-parallax]", {
+              yPercent: 7,
               ease: "none",
               scrollTrigger: {
-                trigger: about,
-                start: "top bottom",
+                trigger: hero,
+                start: "top top",
                 end: "bottom top",
-                scrub: 0.8,
+                scrub: 0.45,
               },
-            },
-          );
-        }
+            });
+          }
 
-        if (trust) {
-          gsap.fromTo(
-            ".trust__art",
-            { xPercent: 10, yPercent: 7, rotate: -2 },
-            {
-              xPercent: -4,
-              yPercent: -7,
-              rotate: 1.5,
-              ease: "none",
+          if (about) {
+            gsap.fromTo(
+              ".about__portrait-main",
+              { scale: 1.025, yPercent: -1 },
+              {
+                scale: 1,
+                yPercent: 2,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: about,
+                  start: "top bottom",
+                  end: "bottom top",
+                  scrub: 0.5,
+                },
+              },
+            );
+          }
+
+          if (trust) {
+            gsap.fromTo(
+              ".trust__art",
+              { xPercent: 7, yPercent: 4 },
+              {
+                xPercent: -3,
+                yPercent: -4,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: trust,
+                  start: "top 82%",
+                  end: "60% 30%",
+                  scrub: 0.55,
+                },
+              },
+            );
+
+            gsap.from(".trust__cinematic-line", {
+              scaleX: 0,
+              transformOrigin: "left center",
+              duration: 0.9,
+              ease: "power3.out",
               scrollTrigger: {
                 trigger: trust,
-                start: "top 82%",
-                end: "60% 30%",
-                scrub: 0.85,
+                start: "top 66%",
+                once: true,
               },
-            },
-          );
+            });
+          }
+        }, scope);
 
-          gsap.from(".trust__cinematic-line", {
-            scaleX: 0,
-            transformOrigin: "left center",
-            duration: 1.1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: trust,
-              start: "top 66%",
-              once: true,
-            },
-          });
-        }
-      });
+        const refresh = () => ScrollTrigger.refresh();
+        window.addEventListener("load", refresh, { once: true });
+        cleanupMotion = () => {
+          window.removeEventListener("load", refresh);
+          context.revert();
+          cleanupMotion = undefined;
+        };
+      }, 120);
+    };
 
-    }, scope);
+    const handleDesktopMotionChange = () => {
+      if (desktopMotion.matches) {
+        loadDesktopMotion();
+      } else {
+        if (loadTimer) window.clearTimeout(loadTimer);
+        loadTimer = 0;
+        cleanupMotion?.();
+      }
+    };
 
-    const refresh = () => ScrollTrigger.refresh();
-    window.addEventListener("load", refresh, { once: true });
+    desktopMotion.addEventListener("change", handleDesktopMotionChange);
+    loadDesktopMotion();
 
     return () => {
-      window.removeEventListener("load", refresh);
-      media.revert();
-      context.revert();
+      cancelled = true;
+      desktopMotion.removeEventListener("change", handleDesktopMotionChange);
+      if (loadTimer) window.clearTimeout(loadTimer);
+      cleanupMotion?.();
     };
   }, [scopeRef]);
 }

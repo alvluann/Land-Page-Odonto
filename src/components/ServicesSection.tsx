@@ -2,6 +2,7 @@ import type { ServiceIcon } from "../data/content";
 import { services } from "../data/content";
 import { assetUrl } from "../lib/assetUrl";
 import { AnimatedIllustration } from "./AnimatedIllustration";
+import { ContinuousCarousel } from "./ContinuousCarousel";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
@@ -56,15 +57,19 @@ export function ServicesSection() {
           </Reveal>
         </div>
 
-        <div
-          className="services__grid"
-          role="region"
-          aria-label="Tratamentos disponíveis; deslize horizontalmente para navegar"
-          tabIndex={0}
+        <ContinuousCarousel
+          className="services__viewport"
+          setClassName="services__grid"
+          ariaLabel="Tratamentos disponíveis em movimento contínuo"
+          speed={30}
         >
           {services.map((service, index) => (
             <Reveal key={service.title} delay={80 + index * 45}>
-              <article className="surface-card service-card">
+              <article
+                className="surface-card service-card"
+                role="group"
+                aria-label={`${index + 1} de ${services.length}: ${service.title}`}
+              >
                 <AnimatedIllustration
                   src={serviceArtwork[service.icon]}
                   className={`service-card__art service-card__art--${service.icon}`}
@@ -79,7 +84,7 @@ export function ServicesSection() {
               </article>
             </Reveal>
           ))}
-        </div>
+        </ContinuousCarousel>
       </div>
     </section>
   );

@@ -1,5 +1,6 @@
 import { PropsWithChildren, useEffect, useRef, useState } from "react";
 import type { CSSProperties } from "react";
+import { observeInView } from "../lib/inViewObserver";
 
 interface RevealProps extends PropsWithChildren {
   className?: string;
@@ -8,7 +9,9 @@ interface RevealProps extends PropsWithChildren {
 }
 
 function prefersReducedMotion() {
-  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  return typeof window !== "undefined"
+    ? window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    : true;
 }
 
 export function Reveal({
@@ -31,23 +34,24 @@ export function Reveal({
       return;
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-            observer.unobserve(entry.target);
-          }
-        });
+    const revealFallback = window.setTimeout(() => setIsVisible(true), 1600);
+    let stopObserving: () => void = () => {};
+
+    stopObserving = observeInView(
+      element,
+      (entry) => {
+        if (!entry.isIntersecting) return;
+        setIsVisible(true);
+        window.clearTimeout(revealFallback);
+        stopObserving();
       },
-      {
-        threshold: 0.18,
-        rootMargin: "0px 0px -10% 0px",
-      },
+      { threshold: 0.18, rootMargin: "0px 0px -10% 0px" },
     );
 
-    observer.observe(element);
-    return () => observer.disconnect();
+    return () => {
+      window.clearTimeout(revealFallback);
+      stopObserving();
+    };
   }, []);
 
   const style = {

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { lazy, Suspense, useRef } from "react";
 import type { CSSProperties } from "react";
 import { AboutSection } from "./components/AboutSection";
 import { DifferentialsSection } from "./components/DifferentialsSection";
@@ -20,7 +20,13 @@ type AppShellStyle = CSSProperties & {
   "--logo-cro-url": string;
 };
 
-function App() {
+const ConfirmationPage = lazy(() =>
+  import("./components/ConfirmationPage").then((module) => ({
+    default: module.ConfirmationPage,
+  })),
+);
+
+function LandingPage() {
   const appRef = useRef<HTMLDivElement>(null);
   useCinematicMotion(appRef);
   usePointerInteractions(appRef);
@@ -50,6 +56,20 @@ function App() {
       <Footer />
     </div>
   );
+}
+
+function App() {
+  const currentPath = window.location.pathname.replace(/\/+$/, "") || "/";
+
+  if (currentPath === "/confirmacao") {
+    return (
+      <Suspense fallback={<div className="confirmation-loading" aria-label="Carregando confirmação" />}>
+        <ConfirmationPage />
+      </Suspense>
+    );
+  }
+
+  return <LandingPage />;
 }
 
 export default App;

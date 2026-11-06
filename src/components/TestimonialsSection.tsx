@@ -1,5 +1,6 @@
 import { testimonials } from "../data/content";
 import { assetUrl } from "../lib/assetUrl";
+import { ContinuousCarousel } from "./ContinuousCarousel";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
@@ -46,15 +47,19 @@ export function TestimonialsSection() {
           </Reveal>
         </div>
 
-        <div
-          className="testimonials__grid"
-          role="region"
-          aria-label="Relatos de pacientes; deslize horizontalmente para navegar"
-          tabIndex={0}
+        <ContinuousCarousel
+          className="testimonials__viewport"
+          setClassName="testimonials__grid"
+          ariaLabel="Relatos de pacientes em movimento contínuo"
+          speed={24}
         >
           {testimonials.map((testimonial, index) => (
             <Reveal key={testimonial.name} delay={90 + index * 50}>
-              <article className="surface-card testimonial-card">
+              <article
+                className="surface-card testimonial-card"
+                role="group"
+                aria-label={`${index + 1} de ${testimonials.length}`}
+              >
                 <span className="testimonial-card__quote" aria-hidden="true">“</span>
                 <blockquote>{testimonial.text}</blockquote>
                 <footer>
@@ -64,7 +69,7 @@ export function TestimonialsSection() {
               </article>
             </Reveal>
           ))}
-        </div>
+        </ContinuousCarousel>
       </div>
     </section>
   );

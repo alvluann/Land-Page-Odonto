@@ -3,6 +3,7 @@ import { resultGallery } from "../data/content";
 import type { ResultGalleryItem } from "../data/content";
 import { assetUrl } from "../lib/assetUrl";
 import { trackConversion } from "../lib/analytics";
+import { observeInView } from "../lib/inViewObserver";
 import { AnimatedIllustration } from "./AnimatedIllustration";
 import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
@@ -17,6 +18,40 @@ interface ResultsMarqueeRowProps {
   direction: MarqueeDirection;
   items: ResultGalleryItem[];
   reducedMotion: boolean;
+}
+
+interface ResultCardProps {
+  item: ResultGalleryItem;
+  index?: number;
+  total?: number;
+}
+
+function ResultCard({ item, index, total }: ResultCardProps) {
+  return (
+    <div
+      className="results-scroll-carousel__item"
+      role={typeof index === "number" ? "group" : undefined}
+      aria-roledescription={typeof index === "number" ? "slide" : undefined}
+      aria-label={typeof index === "number" && total ? `${index + 1} de ${total}` : undefined}
+    >
+      <figure className={`result-card ${item.format === "portrait" ? "result-card--portrait" : ""}`.trim()}>
+        <img
+          src={assetUrl(item.src)}
+          alt={item.alt}
+          draggable={false}
+          width={item.format === "portrait" ? 720 : 1170}
+          height={item.format === "portrait" ? 1280 : 1170}
+          loading="lazy"
+          decoding="async"
+          sizes="(max-width: 759px) 29vw, (max-width: 1199px) 28vw, 23rem"
+        />
+        <figcaption>
+          <small>{item.category}</small>
+          <span>{item.label}</span>
+        </figcaption>
+      </figure>
+    </div>
+  );
 }
 
 const ResultsMarqueeRow = memo(function ResultsMarqueeRow({
@@ -70,25 +105,7 @@ const ResultsMarqueeRow = memo(function ResultsMarqueeRow({
   }, [reducedMotion]);
 
   const orderedItems = direction === "left" ? rowItems : [...rowItems].reverse();
-  const cards = orderedItems.map((item) => (
-    <div key={item.src} className="results-scroll-carousel__item">
-      <figure className={`result-card ${item.format === "portrait" ? "result-card--portrait" : ""}`.trim()}>
-        <img
-          src={assetUrl(item.src)}
-          alt={item.alt}
-          width={item.format === "portrait" ? 720 : 1170}
-          height={item.format === "portrait" ? 1280 : 1170}
-          loading="lazy"
-          decoding="async"
-          sizes="(max-width: 759px) 33vw, (max-width: 1199px) 28vw, 23rem"
-        />
-        <figcaption>
-          <small>{item.category}</small>
-          <span>{item.label}</span>
-        </figcaption>
-      </figure>
-    </div>
-  ));
+  const cards = orderedItems.map((item) => <ResultCard key={item.src} item={item} />);
 
   return (
     <div className={`results-scroll-carousel__row results-scroll-carousel__row--${direction}`}>
@@ -145,13 +162,11 @@ function ResultsCarousel() {
       return;
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsInView(entry.isIntersecting),
+    return observeInView(
+      carousel,
+      (entry) => setIsInView(entry.isIntersecting),
       { rootMargin: "20% 0px", threshold: 0.01 },
     );
-
-    observer.observe(carousel);
-    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -177,25 +192,35 @@ function ResultsCarousel() {
       ref={carouselRef}
       className={`results-scroll-carousel ${reducedMotion ? "is-static" : ""} ${isPaused ? "is-paused" : ""}`.trim()}
       role="region"
-      aria-label="Galeria de resultados clínicos; a animação pausa ao receber foco"
+      aria-label={isMobile
+        ? "Galeria de resultados clínicos em duas fileiras com navegação por gesto"
+        : "Galeria de resultados clínicos; a animação pausa ao receber foco"}
       tabIndex={0}
-      onMouseEnter={() => updateInteractionPause(true)}
-      onMouseLeave={() => updateInteractionPause(false)}
+      onMouseEnter={() => {
+        if (!isMobile) updateInteractionPause(true);
+      }}
+      onMouseLeave={() => {
+        if (!isMobile) updateInteractionPause(false);
+      }}
       onFocusCapture={() => {
-        updateInteractionPause(true);
+        if (!isMobile) updateInteractionPause(true);
         registerEngagement();
       }}
       onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) {
+        if (!isMobile && !event.currentTarget.contains(event.relatedTarget)) {
           updateInteractionPause(false);
         }
       }}
       onPointerDown={() => {
-        updateInteractionPause(true);
+        if (!isMobile) updateInteractionPause(true);
         registerEngagement();
       }}
-      onPointerUp={() => updateInteractionPause(false)}
-      onPointerCancel={() => updateInteractionPause(false)}
+      onPointerUp={() => {
+        if (!isMobile) updateInteractionPause(false);
+      }}
+      onPointerCancel={() => {
+        if (!isMobile) updateInteractionPause(false);
+      }}
     >
       <div className="results-scroll-carousel__rows">
         {isMobile ? (

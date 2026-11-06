@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { observeInView } from "../lib/inViewObserver";
 
 type IllustrationMotion = "float" | "drift" | "breathe" | "sway" | "none";
 
@@ -28,15 +29,11 @@ export function AnimatedIllustration({
       return;
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        artwork.classList.toggle("is-in-view", entry.isIntersecting);
-      },
+    return observeInView(
+      artwork,
+      (entry) => artwork.classList.toggle("is-in-view", entry.isIntersecting),
       { rootMargin: "12% 0px", threshold: 0.01 },
     );
-
-    observer.observe(artwork);
-    return () => observer.disconnect();
   }, []);
 
   return (
